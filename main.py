@@ -1,10 +1,13 @@
 from discord import Client
+
+from apodapi.api import ApodClient
 from parser.parser import MsgParser
 from setup import load_config
 
 config = load_config()
 client = Client()
 parser = MsgParser(config['PARSER_PROG'])
+apod = ApodClient(config['APOD_GQL_ENDPOINT'], config['APOD_API_KEY'])
 
 
 @client.event
@@ -23,8 +26,7 @@ async def on_message(message):
 
 
 def main():
-    # client.run(config['BOT_TOKEN'])
-    print(parser.parse('apod -d 06/28/1999'.split()))
+    client.run(config['BOT_TOKEN'])
 
 
 if __name__ == '__main__':
