@@ -1,5 +1,5 @@
 import argparse
-from datetime import datetime
+from datetime import date, datetime
 
 
 class MsgParser:
@@ -16,7 +16,8 @@ class MsgParser:
 
         self.apod_date_range_group = self.apod_date_group.add_argument_group()
         self.apod_date_range_group.add_argument('-s', '--start-date', type=str, dest='start_date')
-        self.apod_date_range_group.add_argument('-e', '--end-date', type=str, dest='end_date')
+        self.apod_date_range_group.add_argument('-e', '--end-date', nargs='?', const=self.get_today(),
+                                                default=self.get_today(), type=str, dest='end_date')
 
         self.apod_parser.set_defaults(func=self._parse_apod_args)
 
@@ -28,10 +29,14 @@ class MsgParser:
         return args.func(args)
 
     @classmethod
+    def get_today(cls):
+        return date.today().strftime('%m/%d/%Y')
+
+    @classmethod
     def convert_date(cls, arg):
         if isinstance(arg, str):
-            date = datetime.strptime(arg, '%m/%d/%Y')
-            date = date.strftime('%Y-%m-%d')
-            return date
+            date_ = datetime.strptime(arg, '%m/%d/%Y')
+            date_ = date_.strftime('%Y-%m-%d')
+            return date_
         else:
             return arg
