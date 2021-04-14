@@ -23,8 +23,7 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    # TODO: lock to '#nasa-bot' channel
-    if message.content.startswith('/nasa'):
+    if message.content.startswith('/nasa') and message.channel.id == int(config['BOT_CHANNEL_ID']):
         # Parse message and fire webhook
         commands = parser.parse(message.content[5:].split())
 

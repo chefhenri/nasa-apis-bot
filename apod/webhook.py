@@ -13,6 +13,7 @@ class ApodWebhook:
     def _get_embed(cls, data):
         embed = Embed(description=data['explanation'], title=data['title'], url=data['url'])
         if data['mediaType'] == 'video':
+            # FIXME: not able to set attribute
             embed.__setattr__('video', data['url'])
         else:
             embed.set_image(url=data['url'])
