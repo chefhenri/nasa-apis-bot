@@ -13,7 +13,6 @@ class ApodWebhook:
     def _get_embed(cls, data):
         embed = Embed(description=data['explanation'], title=data['title'], url=data['url'])
         if data['mediaType'] == 'video':
-            # TODO: Construct video embed
             embed.__setattr__('video', data['url'])
         else:
             embed.set_image(url=data['url'])
@@ -23,6 +22,7 @@ class ApodWebhook:
             embed.set_author(name=data['copyright'])
         return embed
 
+    # TODO: construct multiple embeds for 'apodsByDate' and 'randomApods' queries
     async def fire(self, data):
         async with ClientSession() as session:
             embed = self._get_embed(data)

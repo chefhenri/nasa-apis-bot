@@ -18,14 +18,18 @@ class ApodClient:
     async def handle(self, commands):
         if commands['count']:
             result = await self.query_random_apods(count=commands['count'])
+            query = 'randomApods'
         elif commands['start_date']:
             result = await self.query_apods_by_date(start_date=commands['start_date'], end_date=commands['end_date'])
+            query = 'apodsByDate'
         elif commands['date']:
             result = await self.query_apod_by_date(date=commands['date'])
+            query = 'apodByDate'
         else:
             result = await self.query_today()
+            query = 'today'
 
-        await self.hook.fire(result['today'])
+        await self.hook.fire(result[query])
 
     async def query_today(self, thumbs=False):
         async with self.client as session:
