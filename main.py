@@ -1,5 +1,3 @@
-import asyncio
-
 from discord import Client
 
 from apod.client import ApodClient
@@ -27,11 +25,7 @@ async def on_message(message):
 
     if message.content.startswith('/nasa') and message.channel.id == config['BOT_CHANNEL_ID']:
         # Parse message and fire webhook
-        print(message.content)
-
         commands = parser.parse(message.content[5:].split())
-
-        print(commands)
 
         await apod_client.handle(commands)
 

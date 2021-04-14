@@ -25,7 +25,7 @@ class ApodClient:
         else:
             result = await self.query_today()
 
-        await self.hook.fire(result)
+        await self.hook.fire(result['today'])
 
     async def query_today(self, thumbs=False):
         async with self.client as session:
@@ -42,9 +42,6 @@ class ApodClient:
             ))
 
             result = await session.execute(query)
-
-            print(result)
-
             return result
 
     async def query_apod_by_date(self, date, thumbs=False):
@@ -52,6 +49,10 @@ class ApodClient:
             schema = self._get_schema()
             query = dsl_gql(DSLQuery(
                 schema.Query.apodByDate(apiKey=self.api_key, date=date, thumbs=thumbs).select(
+                    schema.Apod.copyright,
+                    schema.Apod.explanation,
+                    schema.Apod.hdurl,
+                    schema.Apod.mediaType,
                     schema.Apod.title,
                     schema.Apod.url
                 )
@@ -66,6 +67,10 @@ class ApodClient:
             query = dsl_gql(DSLQuery(
                 schema.Query.apodsByDate(apiKey=self.api_key, startDate=start_date, endDate=end_date,
                                          thumbs=thumbs).select(
+                    schema.Apod.copyright,
+                    schema.Apod.explanation,
+                    schema.Apod.hdurl,
+                    schema.Apod.mediaType,
                     schema.Apod.title,
                     schema.Apod.url
                 )
@@ -79,6 +84,10 @@ class ApodClient:
             schema = self._get_schema()
             query = dsl_gql(DSLQuery(
                 schema.Query.randomApods(apiKey=self.api_key, count=count, thumbs=thumbs).select(
+                    schema.Apod.copyright,
+                    schema.Apod.explanation,
+                    schema.Apod.hdurl,
+                    schema.Apod.mediaType,
                     schema.Apod.title,
                     schema.Apod.url
                 )

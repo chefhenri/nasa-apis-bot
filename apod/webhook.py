@@ -11,11 +11,11 @@ class ApodWebhook:
 
     @classmethod
     def _get_embed(cls, data):
-        if data['media_type'] == 'video':
+        embed = Embed(description=data['explanation'], title=data['title'], url=data['url'])
+        if data['mediaType'] == 'video':
             # TODO: Construct video embed
-            embed = Embed()
+            embed.__setattr__('video', data['url'])
         else:
-            embed = Embed(description=data['explanation'], title=data['title'], url=data['url'])
             embed.set_image(url=data['url'])
             embed.add_field(name='HD Image Link', value=data['hdurl'])
 
@@ -26,8 +26,6 @@ class ApodWebhook:
     async def fire(self, data):
         async with ClientSession() as session:
             embed = self._get_embed(data)
-
-            print(embed.to_dict())
 
             webhook = Webhook.from_url(self.channel_url, adapter=AsyncWebhookAdapter(session))
             await webhook.send(embed=embed)
