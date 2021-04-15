@@ -5,7 +5,7 @@ from discord import Client
 from apod.client import ApodClient
 from botutils.parser import MsgParser
 from botutils.logger import BotLogger
-from setup import load_config
+from botutils.setup import load_config
 
 config = load_config()
 client = Client()
