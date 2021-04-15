@@ -1,7 +1,7 @@
 from discord import Client
 
 from apod.client import ApodClient
-from parser.parser import MsgParser
+from botutils.parser import MsgParser
 from setup import load_config
 
 config = load_config()
