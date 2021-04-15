@@ -15,6 +15,7 @@ class ApodWebhook:
         if data['mediaType'] == 'video':
             # FIXME: not able to set attribute
             # embed.__setattr__('video', data['url'])
+            embed.set_image(url=data['url'])
             pass
         else:
             embed.set_image(url=data['url'])
@@ -26,14 +27,16 @@ class ApodWebhook:
 
     @classmethod
     def _get_embeds(cls, data):
-        return [cls._get_embed(val) for val in data]
+        if len(data) > 10:
+            return [cls._get_embed(val) for val in data[:10]]
+        else:
+            return [cls._get_embed(val) for val in data]
 
-    # TODO: construct multiple embeds for 'apodsByDate' and 'randomApods' queries
     async def fire(self, data, multi):
         async with ClientSession() as session:
             webhook = Webhook.from_url(self.channel_url, adapter=AsyncWebhookAdapter(session))
 
             if multi:
-                await webhook.send(embeds=self._get_embeds(data))
+                await webhook.send(username='NASA Bot', embeds=self._get_embeds(data))
             else:
-                await webhook.send(embed=self._get_embed(data))
+                await webhook.send(username='NASA Bot', embed=self._get_embed(data))
