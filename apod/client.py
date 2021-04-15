@@ -29,7 +29,7 @@ class ApodClient:
             result = await self.query_today()
             query = 'today'
 
-        await self.hook.fire(result[query])
+        await self.hook.fire(data=result[query], multi=isinstance(result[query], list))
 
     async def query_today(self, thumbs=False):
         async with self.client as session:

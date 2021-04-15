@@ -14,7 +14,8 @@ class ApodWebhook:
         embed = Embed(description=data['explanation'], title=data['title'], url=data['url'])
         if data['mediaType'] == 'video':
             # FIXME: not able to set attribute
-            embed.__setattr__('video', data['url'])
+            # embed.__setattr__('video', data['url'])
+            pass
         else:
             embed.set_image(url=data['url'])
             embed.add_field(name='HD Image Link', value=data['hdurl'])
@@ -23,10 +24,16 @@ class ApodWebhook:
             embed.set_author(name=data['copyright'])
         return embed
 
-    # TODO: construct multiple embeds for 'apodsByDate' and 'randomApods' queries
-    async def fire(self, data):
-        async with ClientSession() as session:
-            embed = self._get_embed(data)
+    @classmethod
+    def _get_embeds(cls, data):
+        return [cls._get_embed(val) for val in data]
 
+    # TODO: construct multiple embeds for 'apodsByDate' and 'randomApods' queries
+    async def fire(self, data, multi):
+        async with ClientSession() as session:
             webhook = Webhook.from_url(self.channel_url, adapter=AsyncWebhookAdapter(session))
-            await webhook.send(embed=embed)
+
+            if multi:
+                await webhook.send(embeds=self._get_embeds(data))
+            else:
+                await webhook.send(embed=self._get_embed(data))
