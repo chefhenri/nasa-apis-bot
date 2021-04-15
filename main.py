@@ -1,12 +1,16 @@
+import os
+
 from discord import Client
 
 from apod.client import ApodClient
 from botutils.parser import MsgParser
+from botutils.logger import BotLogger
 from setup import load_config
 
 config = load_config()
 client = Client()
 parser = MsgParser(prog=config['PARSER_PROG'])
+logger = BotLogger(log_dir=os.path.join(os.path.dirname(__file__), config['LOG_DIR']))
 apod_client = ApodClient(endpoint=config['APOD_GQL_ENDPOINT'],
                          api_key=config['APOD_API_KEY'],
                          channel_id=config['BOT_CHANNEL_ID'],
@@ -15,6 +19,7 @@ apod_client = ApodClient(endpoint=config['APOD_GQL_ENDPOINT'],
 
 @client.event
 async def on_ready():
+    logger.log_info(f'Logged in as {client.user}')
     print(f'Logged in as {client.user}')
 
 

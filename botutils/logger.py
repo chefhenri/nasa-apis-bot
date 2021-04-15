@@ -6,15 +6,17 @@ from datetime import date
 LOG_FORMAT = '%(levelname)s:%(name)s:%(asctime)s - %(message)s'
 
 
+# TODO: Config logger from .conf file
 class BotLogger:
     def __init__(self, log_dir):
         logging.basicConfig(filename=os.path.join(log_dir, f'{date.today()}-nasa-bot.log'),
                             filemode='w',
-                            level=logging.DEBUG,
+                            level=logging.INFO,
                             format=LOG_FORMAT)
 
-    def log_info(self):
-        pass
+    @staticmethod
+    def log_info(msg):
+        logging.info(msg)
 
     def log_warn(self):
         pass
