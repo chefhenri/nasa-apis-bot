@@ -3,14 +3,14 @@ import os
 from discord import Client
 
 from apod.client import ApodClient
-from botutils.parser import MsgParser
 from botutils.logger import BotLogger
+from botutils.parser import MsgParser
 from botutils.setup import load_config
 
 config = load_config()
 client = Client()
 parser = MsgParser(prog=config['PARSER_PROG'])
-logger = BotLogger(log_dir=os.path.join(os.path.dirname(__file__), config['LOG_DIR']))
+logger = BotLogger()
 apod_client = ApodClient(endpoint=config['APOD_GQL_ENDPOINT'],
                          api_key=config['APOD_API_KEY'],
                          channel_id=config['BOT_CHANNEL_ID'],
@@ -28,7 +28,7 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    if message.content.startswith('/nasa') and message.channel.id == int(config['BOT_CHANNEL_ID']):
+    if message.content.startswith('!nasa') and message.channel.id == int(config['BOT_CHANNEL_ID']):
         # Parse message and fire webhook
         commands = parser.parse(message.content[5:].split())
 

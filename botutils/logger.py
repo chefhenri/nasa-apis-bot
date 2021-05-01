@@ -1,22 +1,19 @@
+import yaml
 import logging
-import os
-
-from datetime import date
-
-LOG_FORMAT = '%(levelname)s:%(name)s:%(asctime)s - %(message)s'
+import logging.config
 
 
-# TODO: Config logger from .conf file
+# LOG_FORMAT = '%(asctime)s:%(levelname)s:%(name)s: - %(message)s'
+LOG_CFG = '/Users/henrylarson/PycharmProjects/nasa-apis-bot/logger_cfg.yml'
+
+
 class BotLogger:
-    def __init__(self, log_dir):
-        logging.basicConfig(filename=os.path.join(log_dir, f'{date.today()}-nasa-bot.log'),
-                            filemode='w',
-                            level=logging.INFO,
-                            format=LOG_FORMAT)
+    def __init__(self):
+        logging.config.dictConfig(yaml.load(open(LOG_CFG), Loader=yaml.FullLoader))
+        self.logger = logging.getLogger(__name__)
 
-    @staticmethod
-    def log_info(msg):
-        logging.info(msg)
+    def log_info(self, msg):
+        self.logger.info(msg)
 
     def log_warn(self):
         pass
