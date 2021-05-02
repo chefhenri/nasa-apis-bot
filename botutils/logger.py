@@ -1,28 +1,35 @@
-import yaml
 import logging
-import logging.config
 
+from datetime import datetime
 
-# LOG_FORMAT = '%(asctime)s:%(levelname)s:%(name)s: - %(message)s'
-LOG_CFG = '/Users/henrylarson/PycharmProjects/nasa-apis-bot/logger_cfg.yml'
+LOG_DIR = '/Users/henrylarson/PycharmProjects/nasa-apis-bot/logs'
+LOG_FORMAT = '%(asctime)s:%(levelname)s:%(name)s: - %(message)s'
+DATEFMT = '%Y-%m-%d %H:%M:%S'
 
 
 class BotLogger:
-    def __init__(self):
-        logging.config.dictConfig(yaml.load(open(LOG_CFG), Loader=yaml.FullLoader))
-        self.logger = logging.getLogger(__name__)
+    def __init__(self, level=logging.INFO, log_dir=LOG_DIR):
+        logging.basicConfig(level=level,
+                            filename=f'{log_dir}/nasa-log-{datetime.now().strftime(DATEFMT)}.log',
+                            filemode='a',
+                            format=LOG_FORMAT)
 
-    def log_info(self, msg):
-        self.logger.info(msg)
+    @staticmethod
+    def log_info(msg):
+        logging.info(msg)
 
-    def log_warn(self):
-        pass
+    @staticmethod
+    def log_warn(msg):
+        logging.warning(msg)
 
-    def log_err(self):
-        pass
+    @staticmethod
+    def log_err(msg):
+        logging.error(msg)
 
-    def log_debug(self):
-        pass
+    @staticmethod
+    def log_debug(msg):
+        logging.debug(msg)
 
-    def log_crit(self):
-        pass
+    @staticmethod
+    def log_crit(msg):
+        logging.critical(msg)

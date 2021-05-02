@@ -1,4 +1,4 @@
-import os
+import logging
 
 from discord import Client
 
@@ -10,7 +10,7 @@ from botutils.setup import load_config
 config = load_config()
 client = Client()
 parser = MsgParser(prog=config['PARSER_PROG'])
-logger = BotLogger()
+logger = BotLogger(logging.DEBUG)
 apod_client = ApodClient(endpoint=config['APOD_GQL_ENDPOINT'],
                          api_key=config['APOD_API_KEY'],
                          channel_id=config['BOT_CHANNEL_ID'],
