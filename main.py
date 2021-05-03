@@ -32,6 +32,9 @@ async def on_message(message):
         # Parse message and fire webhook
         commands = parser.parse(message.content[5:].split())
 
+        logger.log_debug(commands)
+        logger.log_info('Command received')
+
         await apod_client.handle(commands)
 
 
