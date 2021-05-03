@@ -10,7 +10,7 @@ from botutils.setup import load_config
 config = load_config()
 client = Client()
 parser = MsgParser(prog=config['PARSER_PROG'])
-logger = BotLogger(logging.DEBUG)
+logger = BotLogger()
 apod_client = ApodClient(endpoint=config['APOD_GQL_ENDPOINT'],
                          api_key=config['APOD_API_KEY'],
                          channel_id=config['BOT_CHANNEL_ID'],
