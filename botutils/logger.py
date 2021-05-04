@@ -15,21 +15,21 @@ class BotLogger:
                             format=LOG_FORMAT)
 
     @staticmethod
-    def log_info(msg):
+    def info(msg):
         logging.info(msg)
 
     @staticmethod
-    def log_warn(msg):
+    def warn(msg):
         logging.warning(msg)
 
     @staticmethod
-    def log_err(msg):
+    def err(msg):
         logging.error(msg)
 
     @staticmethod
-    def log_debug(msg):
+    def debug(msg):
         logging.debug(msg)
 
     @staticmethod
-    def log_crit(msg):
+    def crit(msg):
         logging.critical(msg)

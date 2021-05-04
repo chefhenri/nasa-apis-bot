@@ -6,16 +6,30 @@ from .webhook import ApodWebhook as Webhook
 
 
 class ApodClient:
-    def __init__(self, endpoint, api_key, channel_id, channel_url):
+    def __init__(self, endpoint, api_key, channel_id, channel_url, logger):
         self.api_key = api_key
         self.transport = AIOHTTPTransport(url=endpoint)
         self.client = Client(transport=self.transport, fetch_schema_from_transport=True)
-        self.hook = Webhook(gql_endpoint=endpoint, api_key=api_key, channel_id=channel_id, channel_url=channel_url)
+        self.hook = Webhook(gql_endpoint=endpoint,
+                            api_key=api_key,
+                            channel_id=channel_id,
+                            channel_url=channel_url,
+                            logger=logger)
+        self.logger = logger
+
+        self.logger.info('ApodClient initialized')
+        self.logger.debug(f'''
+        ApodClient initialized; 
+        transport: {self.transport},
+        client: {self.client},
+        hook: {self.hook}
+        ''')
 
     def _get_schema(self):
         return DSLSchema(self.client.schema)
 
     async def handle(self, commands):
+        self.logger.debug(f'Commands: {commands}')
         if commands['count']:
             result = await self.query_random_apods(count=commands['count'])
             query = 'randomApods'
@@ -28,6 +42,10 @@ class ApodClient:
         else:
             result = await self.query_today()
             query = 'today'
+
+        self.logger.info(f'Query set to "{query}"')
+        self.logger.info('Query results received')
+        self.logger.debug(f'Query results: {result}')
 
         await self.hook.fire(data=result[query], multi=isinstance(result[query], list))
 
