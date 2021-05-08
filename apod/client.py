@@ -30,18 +30,23 @@ class ApodClient:
 
     async def handle(self, commands):
         self.logger.debug(f'Commands: {commands}')
-        if commands['count']:
-            result = await self.query_random_apods(count=commands['count'])
-            query = 'randomApods'
-        elif commands['start_date']:
-            result = await self.query_apods_by_date(start_date=commands['start_date'], end_date=commands['end_date'])
-            query = 'apodsByDate'
-        elif commands['date']:
-            result = await self.query_apod_by_date(date=commands['date'])
-            query = 'apodByDate'
-        else:
-            result = await self.query_today()
-            query = 'today'
+
+        # TODO: Implement other command handling
+        # if commands['count']:
+        #     result = await self.query_random_apods(count=commands['count'])
+        #     query = 'randomApods'
+        # elif commands['start_date']:
+        #     result = await self.query_apods_by_date(start_date=commands['start_date'], end_date=commands['end_date'])
+        #     query = 'apodsByDate'
+        # elif commands['date']:
+        #     result = await self.query_apod_by_date(date=commands['date'])
+        #     query = 'apodByDate'
+        # else:
+        #     result = await self.query_today()
+        #     query = 'today'
+
+        result = await self.query_today()
+        query = 'today'
 
         self.logger.info(f'Query set to "{query}"')
         self.logger.info('Query results received')

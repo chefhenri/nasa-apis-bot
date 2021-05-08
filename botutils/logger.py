@@ -8,9 +8,8 @@ DATEFMT = '%Y-%m-%d'
 
 
 class BotLogger:
-    # TODO: Set logging level from '.env'
-    def __init__(self, level=logging.INFO, log_dir=LOG_DIR):
-        logging.basicConfig(level=level,
+    def __init__(self, log_lvl, log_dir=LOG_DIR):
+        logging.basicConfig(level=eval(log_lvl),
                             filename=f'{log_dir}/nasa-log-{date.today().strftime(DATEFMT)}.log',
                             filemode='a',
                             format=LOG_FORMAT)

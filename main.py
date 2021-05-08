@@ -6,8 +6,8 @@ from botutils.parser import MsgParser
 from botutils.setup import load_config
 
 config = load_config()
-logger = BotLogger()
 client = Client()
+logger = BotLogger(log_lvl=config['LOG_LVL'])
 parser = MsgParser(prog=config['PARSER_PROG'])
 apod_client = ApodClient(endpoint=config['APOD_GQL_ENDPOINT'],
                          api_key=config['APOD_API_KEY'],
