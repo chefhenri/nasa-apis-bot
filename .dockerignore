@@ -1,0 +1,9 @@
+# Project files
+.idea/**/*.*
+
+# Git files
+.git/**/*.*
+.gitignore
+
+# Environment variables
+.env
