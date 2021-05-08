@@ -2,20 +2,16 @@ from gql import Client
 from gql.dsl import DSLQuery, DSLSchema, dsl_gql
 from gql.transport.aiohttp import AIOHTTPTransport
 
-from .webhook import ApodWebhook as Webhook
+from .webhook import ApodHook
 
 
 class ApodClient:
-    def __init__(self, endpoint, api_key, channel_id, channel_url, logger):
-        self.api_key = api_key
-        self.transport = AIOHTTPTransport(url=endpoint)
-        self.client = Client(transport=self.transport, fetch_schema_from_transport=True)
-        self.hook = Webhook(gql_endpoint=endpoint,
-                            api_key=api_key,
-                            channel_id=channel_id,
-                            channel_url=channel_url,
-                            logger=logger)
+    def __init__(self, config, logger):
+        self.api_key = config['APOD_API_KEY']
         self.logger = logger
+        self.transport = AIOHTTPTransport(url=config['APOD_GQL_ENDPOINT'])
+        self.client = Client(transport=self.transport, fetch_schema_from_transport=True)
+        self.hook = ApodHook(config=config, logger=logger)
 
         self.logger.info('ApodClient initialized')
         self.logger.debug(f'''

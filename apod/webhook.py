@@ -2,21 +2,19 @@ from aiohttp import ClientSession
 from discord import Webhook, AsyncWebhookAdapter, Embed
 
 
-class ApodWebhook:
-    def __init__(self, gql_endpoint, api_key, channel_id, channel_url, logger):
-        self.gql_endpoint = gql_endpoint
-        self.api_key = api_key
-        self.channel_id = channel_id
-        self.channel_url = channel_url
+class ApodHook:
+    def __init__(self, config, logger):
+        self.api_key = config['APOD_API_KEY']
+        self.channel_id = config['BOT_CHANNEL_ID']
+        self.webhook_url = config['WEBHOOK_URL']
         self.logger = logger
 
         self.logger.info('ApodWebhook initialized')
         self.logger.debug(f'''
         ApodWebhook initialized;
-        api_key: {self.api_key}, 
-        endpoint: {self.gql_endpoint}, 
+        api_key: {self.api_key},
         channel_id: {self.channel_id}, 
-        channel_url: {self.channel_url}
+        channel_url: {self.webhook_url}
         ''')
 
     def _get_embed(self, data):
@@ -65,7 +63,7 @@ class ApodWebhook:
 
     async def fire(self, data, multi):
         async with ClientSession() as session:
-            webhook = Webhook.from_url(self.channel_url, adapter=AsyncWebhookAdapter(session))
+            webhook = Webhook.from_url(self.webhook_url, adapter=AsyncWebhookAdapter(session))
             self.logger.info('Webhook created')
             self.logger.debug(f'Webhook: {webhook}')
 
