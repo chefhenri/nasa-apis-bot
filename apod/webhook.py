@@ -2,6 +2,7 @@ from aiohttp import ClientSession
 from discord import Webhook, AsyncWebhookAdapter, Embed
 
 
+# TODO: Add 'help' function, decorate with logging
 class ApodHook:
     def __init__(self, config, logger):
         self.api_key = config['APOD_API_KEY']
@@ -30,8 +31,6 @@ class ApodHook:
 
             self.logger.info('Embed image set')
             self.logger.debug(f"Embed image url: {data['url']}")
-
-            pass
         else:
             embed.set_image(url=data['url'])
 
