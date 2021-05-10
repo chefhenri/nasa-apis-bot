@@ -2,7 +2,6 @@ import logging
 
 from datetime import date
 
-# LOG_DIR = '../logs'
 LOG_FORMAT = '%(asctime)s:%(levelname)s:%(name)s: - %(message)s'
 DATEFMT = '%Y-%m-%d'
 
