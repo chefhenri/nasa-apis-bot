@@ -2,7 +2,7 @@ import argparse
 from datetime import date, datetime
 
 
-# TODO: Create unit tests
+# TODO: Create unit tests, add error handling
 class MsgParser:
     def __init__(self, prog):
         self.parser = argparse.ArgumentParser(prog=prog)

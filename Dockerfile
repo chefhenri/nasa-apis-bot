@@ -8,7 +8,7 @@ RUN pip list
 
 COPY main.py ./
 COPY apod ./apod
-COPY botutils ./botutils
+COPY utils ./botutils
 RUN mkdir ./logs
 
 CMD python3 main.py
