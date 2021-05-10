@@ -1,11 +1,11 @@
 from discord import Client
 
 from apod.client import ApodClient
-from utils.config import get_config
+from utils.config import get_cfg
 from utils.logger import BotLogger
 from utils.parser import MsgParser
 
-bot_config = get_config('.env')
+bot_config = get_cfg('.env')
 
 client = Client()
 logger = BotLogger(log_lvl=bot_config['LOG_LVL'], log_dir=bot_config['LOG_DIR'])
