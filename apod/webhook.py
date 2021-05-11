@@ -4,18 +4,16 @@ from discord import Webhook, AsyncWebhookAdapter, Embed
 
 # TODO: Add 'help' function, decorate with logging, add unit tests
 class ApodHook:
-    def __init__(self, config, logger):
-        self.api_key = config['APOD_API_KEY']
-        self.channel_id = config['BOT_CHANNEL_ID']
-        self.webhook_url = config['WEBHOOK_URL']
+    def __init__(self, config, api_key, hook_url, logger):
+        self.api_key = api_key
+        self.hook_url = hook_url
         self.logger = logger
 
         self.logger.info('ApodWebhook initialized')
         self.logger.debug(f'''
         ApodWebhook initialized;
         api_key: {self.api_key},
-        channel_id: {self.channel_id}, 
-        channel_url: {self.webhook_url}
+        webhook_url: {self.hook_url}
         ''')
 
     def _get_embed(self, data):
@@ -62,7 +60,7 @@ class ApodHook:
 
     async def fire(self, data, multi):
         async with ClientSession() as session:
-            webhook = Webhook.from_url(self.webhook_url, adapter=AsyncWebhookAdapter(session))
+            webhook = Webhook.from_url(self.hook_url, adapter=AsyncWebhookAdapter(session))
             self.logger.info('Webhook created')
             self.logger.debug(f'Webhook: {webhook}')
 

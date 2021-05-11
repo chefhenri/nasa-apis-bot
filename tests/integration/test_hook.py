@@ -62,15 +62,18 @@ class TestHookFire(unittest.IsolatedAsyncioTestCase):
     def setUpClass(cls) -> None:
         cls._config = get_cfg(ENV_PATH)
         cls._logger = BotLogger(log_lvl=cls._config['TEST_LOG_LVL'], log_dir=cls._config['TEST_LOG_DIR'])
-        cls._hook = ApodHook(config=cls._config, logger=cls._logger)
+        cls._hook = ApodHook(config=cls._config,
+                             api_key=cls._config['APOD_API_KEY'],
+                             hook_url=cls._config['TEST_HOOK_URL'],
+                             logger=cls._logger)
 
-    @unittest.skip('not implemented')
+    # @unittest.skip('not implemented')
     async def test_fire_single_embed(self):
-        pass
+        await self._hook.fire(data=SINGLE_EMBED_DATA_ARG, multi=False)
 
-    @unittest.skip('not implemented')
+    # @unittest.skip('not implemented')
     async def test_fire_multiple_embeds(self):
-        pass
+        await self._hook.fire(data=MULTI_EMBED_DATA_ARG, multi=True)
 
 
 class TestHookEmbeds(unittest.TestCase):
@@ -78,7 +81,10 @@ class TestHookEmbeds(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls._config = get_cfg(ENV_PATH)
         cls._logger = BotLogger(log_lvl=cls._config['TEST_LOG_LVL'], log_dir=cls._config['TEST_LOG_DIR'])
-        cls._hook = ApodHook(config=cls._config, logger=cls._logger)
+        cls._hook = ApodHook(config=cls._config,
+                             api_key=cls._config['APOD_API_KEY'],
+                             hook_url=cls._config['TEST_HOOK_URL'],
+                             logger=cls._logger)
 
     def test_get_embed(self):
         test_val = self._hook._get_embed(SINGLE_EMBED_DATA_ARG)
