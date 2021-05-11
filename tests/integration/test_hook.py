@@ -1,15 +1,10 @@
 import unittest
 
-from apod.client import ApodClient
+from apod.webhook import ApodHook
 from utils.config import get_cfg
 from utils.logger import BotLogger
 
-DATE_ARG = '1999-06-28'
-START_DATE_ARG = DATE_ARG
-END_DATE_ARG = '1999-06-29'
-COUNT_ARG = 2
-
-APOD_BY_DATE_VAL = {
+SINGLE_EMBED_DATA_ARG = {
     "copyright": None,
     "explanation": "Are Martians trying to tell us something?  An indentation has been recently photographed on Mars "
                    "that resembles a heart, a common human symbol for love.  Because intelligent Martians have never "
@@ -23,7 +18,8 @@ APOD_BY_DATE_VAL = {
     "title": "From Mars with Love",
     "url": "https://apod.nasa.gov/apod/image/9906/marsheart_mgs.jpg"
 }
-APODS_BY_DATE_VAL = [
+
+MULTI_EMBED_DATA_ARG = [
     {
         "copyright": None,
         "explanation": "Are Martians trying to tell us something?  An indentation has been recently "
@@ -58,62 +54,57 @@ APODS_BY_DATE_VAL = [
     }
 ]
 
-APOD_BY_DATE_QUERY = 'apodByDate'
-APODS_BY_DATE_QUERY = 'apodsByDate'
-APODS_BY_COUNT_QUERY = 'randomApods'
 
-RESULT_NO_MATCH = 'The expected result does not match the tested result.'
-
-
-class TestClientQueries(unittest.IsolatedAsyncioTestCase):
+class TestHookFire(unittest.IsolatedAsyncioTestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.maxDiff = None
         cls._config = get_cfg('../../.env')
         cls._logger = BotLogger(log_lvl=cls._config['TEST_LOG_LVL'], log_dir=cls._config['TEST_LOG_DIR'])
-        cls._client = ApodClient(config=cls._config, logger=cls._logger)
+        cls._hook = ApodHook(config=cls._config, logger=cls._logger)
 
-    async def test_query_today(self):
-        test_val = await self._client.query_today()
+    @unittest.skip('not implemented')
+    async def test_fire_single_embed(self):
+        pass
 
-        # Check query result
-        self.assertIn('today', test_val)
+    @unittest.skip('not implemented')
+    async def test_fire_multiple_embeds(self):
+        pass
 
-        # Check result data
-        self.assertIn('copyright', test_val['today'])
-        self.assertIn('explanation', test_val['today'])
-        self.assertIn('hdurl', test_val['today'])
-        self.assertIn('mediaType', test_val['today'])
-        self.assertIn('title', test_val['today'])
-        self.assertIn('url', test_val['today'])
 
-    async def test_query_apod_by_date(self):
-        test_val = await self._client.query_apod_by_date(DATE_ARG)
-        exp_val = APOD_BY_DATE_VAL
+class TestHookEmbeds(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls._config = get_cfg('../../.env')
+        cls._logger = BotLogger(log_lvl=cls._config['TEST_LOG_LVL'], log_dir=cls._config['TEST_LOG_DIR'])
+        cls._hook = ApodHook(config=cls._config, logger=cls._logger)
 
-        # Check query result
-        self.assertIn(APOD_BY_DATE_QUERY, test_val)
-        self.assertDictEqual(test_val[APOD_BY_DATE_QUERY], exp_val, RESULT_NO_MATCH)
+    def test_get_embed(self):
+        test_val = self._hook._get_embed(SINGLE_EMBED_DATA_ARG)
 
-    async def test_query_apods_by_date(self):
-        test_val = await self._client.query_apods_by_date(START_DATE_ARG, END_DATE_ARG)
-        exp_val = APODS_BY_DATE_VAL
+        # Check embed
+        self.assertIsNotNone(test_val)
 
-        # Check query result
-        self.assertIn(APODS_BY_DATE_QUERY, test_val)
-        self.assertListEqual(test_val[APODS_BY_DATE_QUERY], exp_val, RESULT_NO_MATCH)
+        test_val = test_val.to_dict()
 
-    async def test_query_random_apods(self):
-        test_val = await self._client.query_random_apods(COUNT_ARG)
+        # Check embed data
+        self.assertIn('image', test_val)
+        self.assertIn('fields', test_val)
+        self.assertIn('description', test_val)
+        self.assertIn('url', test_val)
+        self.assertIn('title', test_val)
 
-        # Check query result
-        self.assertIn(APODS_BY_COUNT_QUERY, test_val)
+    # @unittest.skip('not implemented')
+    def test_get_embeds(self):
+        test_val = self._hook._get_embeds(MULTI_EMBED_DATA_ARG)
 
-        # Check result data
-        for apod in test_val[APODS_BY_COUNT_QUERY]:
-            self.assertIn('copyright', apod)
-            self.assertIn('explanation', apod)
-            self.assertIn('hdurl', apod)
-            self.assertIn('mediaType', apod)
-            self.assertIn('title', apod)
-            self.assertIn('url', apod)
+        # Check embed
+        self.assertIsNotNone(test_val)
+
+        # Check embed data
+        for embed in test_val:
+            embed = embed.to_dict()
+            self.assertIn('image', embed)
+            self.assertIn('fields', embed)
+            self.assertIn('description', embed)
+            self.assertIn('url', embed)
+            self.assertIn('title', embed)

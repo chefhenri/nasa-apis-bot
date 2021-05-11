@@ -2,7 +2,7 @@ from aiohttp import ClientSession
 from discord import Webhook, AsyncWebhookAdapter, Embed
 
 
-# TODO: Add 'help' function, decorate with logging
+# TODO: Add 'help' function, decorate with logging, add unit tests
 class ApodHook:
     def __init__(self, config, logger):
         self.api_key = config['APOD_API_KEY']
@@ -53,11 +53,11 @@ class ApodHook:
         return embed
 
     def _get_embeds(self, data):
+        self.logger.info('Generating multiple embeds')
         if len(data) > 10:
-            self.logger.info('Generating multiple embeds')
             return [self._get_embed(val) for val in data[:10]]
         else:
-            self.logger.info('Generating single embed')
+            # self.logger.info('Generating single embed')
             return [self._get_embed(val) for val in data]
 
     async def fire(self, data, multi):
