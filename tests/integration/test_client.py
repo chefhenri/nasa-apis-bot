@@ -9,6 +9,8 @@ START_DATE_ARG = DATE_ARG
 END_DATE_ARG = '1999-06-29'
 COUNT_ARG = 2
 
+ENV_PATH = '/Users/henrylarson/PycharmProjects/nasa-apis-bot/.env'
+
 APOD_BY_DATE_VAL = {
     "copyright": None,
     "explanation": "Are Martians trying to tell us something?  An indentation has been recently photographed on Mars "
@@ -69,7 +71,7 @@ class TestClientQueries(unittest.IsolatedAsyncioTestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.maxDiff = None
-        cls._config = get_cfg('../../.env')
+        cls._config = get_cfg(ENV_PATH)
         cls._logger = BotLogger(log_lvl=cls._config['TEST_LOG_LVL'], log_dir=cls._config['TEST_LOG_DIR'])
         cls._client = ApodClient(config=cls._config, logger=cls._logger)
 

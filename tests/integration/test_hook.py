@@ -4,6 +4,8 @@ from apod.webhook import ApodHook
 from utils.config import get_cfg
 from utils.logger import BotLogger
 
+ENV_PATH = '/Users/henrylarson/PycharmProjects/nasa-apis-bot/.env'
+
 SINGLE_EMBED_DATA_ARG = {
     "copyright": None,
     "explanation": "Are Martians trying to tell us something?  An indentation has been recently photographed on Mars "
@@ -58,7 +60,7 @@ MULTI_EMBED_DATA_ARG = [
 class TestHookFire(unittest.IsolatedAsyncioTestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls._config = get_cfg('../../.env')
+        cls._config = get_cfg(ENV_PATH)
         cls._logger = BotLogger(log_lvl=cls._config['TEST_LOG_LVL'], log_dir=cls._config['TEST_LOG_DIR'])
         cls._hook = ApodHook(config=cls._config, logger=cls._logger)
 
@@ -74,7 +76,7 @@ class TestHookFire(unittest.IsolatedAsyncioTestCase):
 class TestHookEmbeds(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls._config = get_cfg('../../.env')
+        cls._config = get_cfg(ENV_PATH)
         cls._logger = BotLogger(log_lvl=cls._config['TEST_LOG_LVL'], log_dir=cls._config['TEST_LOG_DIR'])
         cls._hook = ApodHook(config=cls._config, logger=cls._logger)
 
