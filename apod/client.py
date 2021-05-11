@@ -5,7 +5,7 @@ from gql.transport.aiohttp import AIOHTTPTransport
 from .webhook import ApodHook
 
 
-# TODO: Decorate with logging, create unit tests
+# TODO: Decorate with logging
 class ApodClient:
     def __init__(self, config, logger):
         self.api_key = config['APOD_API_KEY']
@@ -27,19 +27,6 @@ class ApodClient:
 
     async def handle(self, commands):
         self.logger.debug(f'Commands: {commands}')
-
-        # if commands['count']:
-        #     result = await self.query_random_apods(count=commands['count'])
-        #     query = 'randomApods'
-        # elif commands['start_date']:
-        #     result = await self.query_apods_by_date(start_date=commands['start_date'], end_date=commands['end_date'])
-        #     query = 'apodsByDate'
-        # elif commands['date']:
-        #     result = await self.query_apod_by_date(date=commands['date'])
-        #     query = 'apodByDate'
-        # else:
-        #     result = await self.query_today()
-        #     query = 'today'
 
         # TODO: Implement full command handling
         if commands['date']:
