@@ -1,24 +1,19 @@
+import functools
 import sys
 
 from discord import Client
 
 from apod.client import ApodClient
-from utils.config import get_cfg
 from utils.logger import BotLogger
 from utils.parser import MsgParser
-
-bot_config = get_cfg(f".env.{sys.argv[1]}")
-
+from utils.config import init_root_cfg, get_client_cfg
 
 client = Client()
-logger = BotLogger(log_lvl=bot_config['LOG_LVL'], log_dir=bot_config['LOG_DIR'])
-parser = MsgParser(prog=bot_config['PARSER_PROG'])
-apod_client = ApodClient(config=bot_config, logger=logger)
 
 
 @client.event
 async def on_ready():
-    logger.info(f'Logged in as {client.user}')
+    get_logger().info(f'Logged in as {client.user}')
     print(f'Logged in as {client.user}')
 
 
@@ -28,18 +23,34 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    if message.content.startswith('!nasa') and message.channel.id == int(bot_config['BOT_CHANNEL_ID']):
+    if message.content.startswith('!nasa'):
         # Parse message into commands
-        commands = parser.parse(message.content[5:].split())
+        commands = get_parser().parse(message.content[5:].split())
 
-        logger.info('Command received')
+        get_logger().info('Command received')
 
         # Handle commands and fire webhook
-        await apod_client.handle(commands)
+        await get_apod_client().handle(commands)
+
+
+@functools.lru_cache(maxsize=None)
+def get_parser():
+    return MsgParser()
+
+
+@functools.lru_cache(maxsize=None)
+def get_logger():
+    return BotLogger()
+
+
+@functools.lru_cache(maxsize=None)
+def get_apod_client():
+    return ApodClient(logger=get_logger())
 
 
 def main():
-    client.run(bot_config['BOT_TOKEN'])
+    init_root_cfg(f".env.{sys.argv[1]}")
+    client.run(get_client_cfg()['token'])
 
 
 if __name__ == '__main__':
