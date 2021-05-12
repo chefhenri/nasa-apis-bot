@@ -1,6 +1,9 @@
 # Project files
 .idea/**/*.*
 
+# Test suites
+tests/**/*.*
+
 # Git files
 .git/**/*.*
 .gitignore
