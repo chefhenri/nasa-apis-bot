@@ -2,10 +2,10 @@
 import unittest
 
 from apod.webhook import ApodHook
-from utils.config import get_cfg
+from utils.config import init_root_cfg
 from utils.logger import BotLogger
 
-ENV_PATH = '/.env.prod'
+ENV_PATH = '/Users/henrylarson/PycharmProjects/nasa-apis-bot/.env.dev'
 
 SINGLE_EMBED_DATA_ARG = {
     "copyright": None,
@@ -62,12 +62,9 @@ MULTI_EMBED_DATA_ARG = [
 class TestHookFire(unittest.IsolatedAsyncioTestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls._config = get_cfg(ENV_PATH)
-        cls._logger = BotLogger(log_lvl=cls._config['TEST_LOG_LVL'], log_dir=cls._config['TEST_LOG_DIR'])
-        cls._hook = ApodHook(config=cls._config,
-                             api_key=cls._config['APOD_API_KEY'],
-                             hook_url=cls._config['TEST_HOOK_URL'],
-                             logger=cls._logger)
+        cls._config = init_root_cfg(ENV_PATH)
+        cls._logger = BotLogger()
+        cls._hook = ApodHook(logger=cls._logger)
 
     # @unittest.skip('not implemented')
     async def test_fire_single_embed(self):
@@ -82,12 +79,9 @@ class TestHookFire(unittest.IsolatedAsyncioTestCase):
 class TestHookEmbeds(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls._config = get_cfg(ENV_PATH)
-        cls._logger = BotLogger(log_lvl=cls._config['TEST_LOG_LVL'], log_dir=cls._config['TEST_LOG_DIR'])
-        cls._hook = ApodHook(config=cls._config,
-                             api_key=cls._config['APOD_API_KEY'],
-                             hook_url=cls._config['TEST_HOOK_URL'],
-                             logger=cls._logger)
+        cls._config = init_root_cfg(ENV_PATH)
+        cls._logger = BotLogger()
+        cls._hook = ApodHook(logger=cls._logger)
 
     def test_get_embed(self):
         test_val = self._hook._get_embed(SINGLE_EMBED_DATA_ARG)

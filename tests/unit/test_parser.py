@@ -3,6 +3,7 @@ import unittest
 from datetime import date, datetime
 
 from utils.parser import MsgParser
+from utils.config import init_root_cfg
 
 # Test arguments
 DATE_ARG = '06/28/1999'
@@ -28,12 +29,15 @@ DATE_NO_MATCH = 'Expected date does not match the tested date.'
 ARGS_NO_MATCH = 'Expected args do not match the tested args.'
 VAL_NO_MATCH = 'Expected value does not match the tested value.'
 
+ENV_PATH = '/Users/henrylarson/PycharmProjects/nasa-apis-bot/.env.dev'
+
 
 # FIXME: Fix constructors
 class ParserTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls._parser = MsgParser(prog='Test')
+        init_root_cfg(ENV_PATH)
+        cls._parser = MsgParser()
 
     def test_parse_apod_with_no_date(self):
         test_args = self._parser.parse(APOD_ARGS.split())

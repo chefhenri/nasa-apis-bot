@@ -2,7 +2,7 @@
 import unittest
 
 from apod.client import ApodClient
-from utils.config import get_cfg
+from utils.config import init_root_cfg
 from utils.logger import BotLogger
 
 DATE_ARG = '1999-06-28'
@@ -10,7 +10,7 @@ START_DATE_ARG = DATE_ARG
 END_DATE_ARG = '1999-06-29'
 COUNT_ARG = 2
 
-ENV_PATH = '/.env.prod'
+ENV_PATH = '/Users/henrylarson/PycharmProjects/nasa-apis-bot/.env.dev'
 
 APOD_BY_DATE_VAL = {
     "copyright": None,
@@ -73,9 +73,10 @@ class TestClientQueries(unittest.IsolatedAsyncioTestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.maxDiff = None
-        cls._config = get_cfg(ENV_PATH)
-        cls._logger = BotLogger(log_lvl=cls._config['TEST_LOG_LVL'], log_dir=cls._config['TEST_LOG_DIR'])
-        cls._client = ApodClient(config=cls._config, logger=cls._logger)
+        cls._config = init_root_cfg(ENV_PATH)
+
+        cls._logger = BotLogger()
+        cls._client = ApodClient(logger=cls._logger)
 
     async def test_query_today(self):
         test_val = await self._client.query_today()
