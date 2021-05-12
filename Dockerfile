@@ -6,9 +6,7 @@ COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 RUN pip list
 
-COPY main.py ./
-COPY apod ./apod
-COPY utils ./botutils
+COPY . .
 RUN mkdir ./logs
 
 CMD python3 main.py

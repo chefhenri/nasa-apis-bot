@@ -1,12 +1,15 @@
 # Project files
 .idea/**/*.*
 
-# Test suites
+# Logs
+logs/**/*.*
+
+# Tests
 tests/**/*.*
 
-# Git files
+# Git
 .git/**/*.*
 .gitignore
 
-# Environment variables
+# Env
 .env
