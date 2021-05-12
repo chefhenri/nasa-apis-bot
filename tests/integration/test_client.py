@@ -1,3 +1,4 @@
+# FIXME: Fix imports
 import unittest
 
 from apod.client import ApodClient
@@ -67,6 +68,7 @@ APODS_BY_COUNT_QUERY = 'randomApods'
 RESULT_NO_MATCH = 'The expected result does not match the tested result.'
 
 
+# FIXME: Fix constructors
 class TestClientQueries(unittest.IsolatedAsyncioTestCase):
     @classmethod
     def setUpClass(cls) -> None:

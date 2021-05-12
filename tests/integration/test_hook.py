@@ -1,3 +1,4 @@
+# FIXME: Fix imports
 import unittest
 
 from apod.webhook import ApodHook
@@ -57,6 +58,7 @@ MULTI_EMBED_DATA_ARG = [
 ]
 
 
+# FIXME: Fix constructors
 class TestHookFire(unittest.IsolatedAsyncioTestCase):
     @classmethod
     def setUpClass(cls) -> None:
@@ -76,6 +78,7 @@ class TestHookFire(unittest.IsolatedAsyncioTestCase):
         await self._hook.fire(data=MULTI_EMBED_DATA_ARG, multi=True)
 
 
+# FIXME: Fix constructors
 class TestHookEmbeds(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:

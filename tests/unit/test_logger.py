@@ -1,3 +1,4 @@
+# FIXME: Fix imports
 import os
 import unittest
 
@@ -9,6 +10,7 @@ from utils.logger import BotLogger
 ENV_PATH = '/.env.prod'
 
 
+# FIXME: Fix constructors
 class LoggerTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
