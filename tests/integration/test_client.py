@@ -9,7 +9,7 @@ START_DATE_ARG = DATE_ARG
 END_DATE_ARG = '1999-06-29'
 COUNT_ARG = 2
 
-ENV_PATH = '/Users/henrylarson/PycharmProjects/nasa-apis-bot/.env'
+ENV_PATH = '/.env.prod'
 
 APOD_BY_DATE_VAL = {
     "copyright": None,

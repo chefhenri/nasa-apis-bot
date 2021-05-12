@@ -6,7 +6,7 @@ from datetime import date
 from utils.config import get_cfg
 from utils.logger import BotLogger
 
-ENV_PATH = '/Users/henrylarson/PycharmProjects/nasa-apis-bot/.env'
+ENV_PATH = '/.env.prod'
 
 
 class LoggerTest(unittest.TestCase):

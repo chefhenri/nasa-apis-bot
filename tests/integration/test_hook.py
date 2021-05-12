@@ -4,7 +4,7 @@ from apod.webhook import ApodHook
 from utils.config import get_cfg
 from utils.logger import BotLogger
 
-ENV_PATH = '/Users/henrylarson/PycharmProjects/nasa-apis-bot/.env'
+ENV_PATH = '/.env.prod'
 
 SINGLE_EMBED_DATA_ARG = {
     "copyright": None,

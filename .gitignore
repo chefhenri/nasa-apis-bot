@@ -25,7 +25,8 @@
 .idea/httpRequests
 
 # Environment variables
-.env
+.env.dev
+.env.prod
 
 # Logs
 logs/**/*.log
