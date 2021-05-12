@@ -9,20 +9,20 @@ from utils.root import init, convert_date, get_apod_client
 bot_client = commands.Bot(command_prefix='/')
 
 
-# TODO: Add logging
+# TODO: Add logging, integration tests
 @bot_client.event
 async def on_ready():
     print(f'Logged in as {bot_client.user}')
 
 
-# TODO: Add logging
+# TODO: Add logging, integration tests
 @bot_client.event
 async def on_command_error(ctx, err):
     if isinstance(err, commands.CommandNotFound):
         pass
 
 
-# TODO: Add logging
+# TODO: Add logging, integration tests
 @bot_client.command(name='apod', aliases=['today'])
 async def _apod(ctx, _date: str = date.today().strftime('%m/%d/%Y')):
     try:

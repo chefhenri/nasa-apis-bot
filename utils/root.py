@@ -11,6 +11,7 @@ def init(mode):
     init_root_cfg(f".env.{mode}")
 
 
+# TODO: Add unit tests
 def convert_date(_date):
     for fmt in ('%m/%d/%Y', '%d/%m/%Y', '%m.%d.%Y', '%d.%m.%Y', '%m-%d-%Y', '%d-%m-%Y', '%Y-%m-%d'):
         try:
