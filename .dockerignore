@@ -2,13 +2,13 @@
 .idea/**/*.*
 
 # Logs
-logs/**/*.*
+logs/
 
 # Tests
-tests/**/*.*
+tests/
 
 # Git
-.git/**/*.*
+.git/
 .gitignore
 
 # Env
