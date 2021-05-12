@@ -1,41 +1,28 @@
 import functools
 import sys
 
-from discord import Client
+from datetime import date, datetime
+from discord.ext import commands
 
 from apod.client import ApodClient
-from utils.logger import BotLogger
-from utils.parser import MsgParser
 from utils.config import init_root_cfg, get_client_cfg
-
-client = Client()
-
-
-@client.event
-async def on_ready():
-    get_logger().info(f'Logged in as {client.user}')
-    print(f'Logged in as {client.user}')
+from utils.logger import BotLogger
+bot_client = commands.Bot(command_prefix='/')
 
 
 # TODO: Decorate with logging
-@client.event
-async def on_message(message):
-    if message.author == client.user:
-        return
-
-    if message.content.startswith('!nasa'):
-        # Parse message into commands
-        commands = get_parser().parse(message.content[5:].split())
-
-        get_logger().info('Command received')
-
-        # Handle commands and fire webhook
-        await get_apod_client().handle(commands)
+@bot_client.event
+async def on_ready():
+    print(f'Logged in as {bot_client.user}')
 
 
-@functools.lru_cache(maxsize=None)
-def get_parser():
-    return MsgParser()
+@bot_client.command(name='apod', aliases=['today'])
+async def _apod(ctx, _date=date.today().strftime('%m/%d/%Y')):
+    await get_apod_client().handle({'date': convert_date(_date)})
+
+
+def convert_date(_date):
+    return datetime.strptime(_date, '%m/%d/%Y').strftime('%Y-%m-%d')
 
 
 @functools.lru_cache(maxsize=None)
@@ -50,7 +37,7 @@ def get_apod_client():
 
 def main():
     init_root_cfg(f".env.{sys.argv[1]}")
-    client.run(get_client_cfg()['token'])
+    bot_client.run(get_client_cfg()['token'])
 
 
 if __name__ == '__main__':
