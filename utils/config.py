@@ -13,7 +13,6 @@ def init_root_cfg(env_path):
 @functools.lru_cache(maxsize=None)
 def get_root_cfg():
     return {
-        'prog': root_config['PARSER_PROG'],
         'log_lvl': root_config['LOG_LVL'],
         'log_dir': root_config['LOG_DIR']
     }
