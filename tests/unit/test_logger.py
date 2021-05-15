@@ -4,7 +4,7 @@ import unittest
 
 from datetime import date
 
-from utils.config import init_root_cfg, get_root_cfg
+from utils.config import init_root_cfg, get_logger_cfg
 from utils.logger import BotLogger
 
 ENV_PATH = '/Users/henrylarson/PycharmProjects/nasa-apis-bot/.env.dev'
@@ -15,7 +15,7 @@ class LoggerTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         init_root_cfg(ENV_PATH)
-        cls._config = get_root_cfg()
+        cls._config = get_logger_cfg()
         cls._logger = BotLogger()
         cls._filename = f"nasa-log-{date.today().strftime('%Y-%m-%d')}.log"
         cls._filesize = os.path.getsize(f"{cls._config['log_dir']}/{cls._filename}")

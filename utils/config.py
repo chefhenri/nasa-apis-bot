@@ -10,14 +10,16 @@ def init_root_cfg(env_path):
     root_config = dotenv_values(dotenv_path=env_path)
 
 
+# TODO: Wrap logging
 @functools.lru_cache(maxsize=None)
-def get_root_cfg():
+def get_logger_cfg():
     return {
         'log_lvl': root_config['LOG_LVL'],
         'log_dir': root_config['LOG_DIR']
     }
 
 
+# TODO: Wrap logging
 @functools.lru_cache(maxsize=None)
 def get_client_cfg():
     return {
@@ -27,6 +29,7 @@ def get_client_cfg():
     }
 
 
+# TODO: Wrap logging
 @functools.lru_cache(maxsize=None)
 def get_hook_cfg():
     return {

@@ -1,12 +1,44 @@
+import functools
+
+from datetime import datetime
+
 from gql import Client
 from gql.dsl import DSLQuery, DSLSchema, dsl_gql
 from gql.transport.aiohttp import AIOHTTPTransport
 
 from .webhook import ApodHook
 from utils.config import get_client_cfg
+from utils.logging import wrap, entering, exiting, get_logger
+
+DATE_FMTS = (
+    '%m/%d/%Y',
+    '%d/%m/%Y',
+    '%m.%d.%Y',
+    '%d.%m.%Y',
+    '%m-%d-%Y',
+    '%d-%m-%Y',
+    '%Y-%m-%d'
+)
 
 
-# TODO: Decorate with logging
+# TODO: Wrap logging
+@functools.lru_cache(maxsize=None)
+def get_apod_client():
+    return ApodClient(logger=get_logger())
+
+
+# TODO: Wrap logging, add unit tests
+@wrap(entering, exiting)
+def convert_date(_date):
+    for fmt in DATE_FMTS:
+        try:
+            return datetime.strptime(_date, fmt).strftime('%Y-%m-%d')
+        except ValueError:
+            pass
+
+    raise ValueError('No valid date format found')
+
+
 class ApodClient:
     def __init__(self, logger):
         self._config = get_client_cfg()
@@ -16,6 +48,7 @@ class ApodClient:
         self._transport = AIOHTTPTransport(url=self._config['endpoint'])
         self._client = Client(transport=self._transport, fetch_schema_from_transport=True)
 
+        # TODO: Extract to log wrapper
         self._logger.debug(f'''
         ApodClient initialized; 
         transport: {self._transport},
@@ -24,9 +57,11 @@ class ApodClient:
         ''')
         self._logger.info('ApodClient initialized')
 
+    @wrap(entering, exiting)
     def _get_schema(self):
         return DSLSchema(self._client.schema)
 
+    @wrap(entering, exiting)
     async def handle(self, commands):
         self._logger.debug(f'Commands: {commands}')
 
@@ -44,6 +79,7 @@ class ApodClient:
 
         await self._hook.fire(data=result[query], multi=isinstance(result[query], list))
 
+    @wrap(entering, exiting)
     async def query_today(self, thumbs=False):
         async with self._client as session:
             schema = self._get_schema()
@@ -61,6 +97,7 @@ class ApodClient:
             result = await session.execute(query)
             return result
 
+    @wrap(entering, exiting)
     async def query_apod_by_date(self, date, thumbs=False):
         async with self._client as session:
             schema = self._get_schema()
@@ -78,6 +115,7 @@ class ApodClient:
             result = await session.execute(query)
             return result
 
+    @wrap(entering, exiting)
     async def query_apods_by_date(self, start_date, end_date, thumbs=False):
         async with self._client as session:
             schema = self._get_schema()
@@ -96,6 +134,7 @@ class ApodClient:
             result = await session.execute(query)
             return result
 
+    @wrap(entering, exiting)
     async def query_random_apods(self, count, thumbs=False):
         async with self._client as session:
             schema = self._get_schema()
