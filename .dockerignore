@@ -12,4 +12,5 @@ tests/
 .gitignore
 
 # Env
-.env
+.env.dev
+.env.prod
