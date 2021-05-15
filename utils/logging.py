@@ -9,14 +9,14 @@ LOG_FILE = f"nasa-log-{date.today().strftime(DATE_FMT)}.log"
 LOG_FMT = '%(asctime)s:%(levelname)s:%(name)s: - %(message)s'
 
 
-# TODO: Docstrings
 def init_logger(log_lvl, log_dir):
+    """ Initializes the logger """
     logging.basicConfig(level=eval(log_lvl), filename=f"{log_dir}/{LOG_FILE}", format=LOG_FMT)
 
 
-# TODO: Docstrings
 @functools.lru_cache(maxsize=None)
 def get_logger():
+    """ Gets the root logger and caches it """
     return logging.getLogger(name=LOGGER_NAME)
 
 
@@ -28,7 +28,7 @@ def wrap(pre, post):
 
         def call(*args, **kwargs):
             """ Original function """
-            pre(func, *args)
+            pre(func)
             result = func(*args, **kwargs)
             post(func)
 
@@ -39,18 +39,13 @@ def wrap(pre, post):
     return decorate
 
 
-def entering(func, *args):
+def entering(func):
     """ Pre function logging """
     logger = get_logger()
 
     logger.debug(f"Entered {func.__name__}")
     logger.info(func.__doc__)
     logger.info(f"Function at line {func.__code__.co_firstlineno} in {func.__code__.co_filename}")
-
-    try:
-        logger.warning(f"Argument(s):  {'; '.join('%s is %s' %(var, arg) for var, arg in zip(func.__code__.co_varnames, *args))}")
-    except IndexError:
-        logger.warning('No arguments')
 
 
 def exiting(func):

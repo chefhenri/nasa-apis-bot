@@ -21,15 +21,16 @@ DATE_FMTS = (
 )
 
 
-# TODO: Wrap logging, docstrings
 @functools.lru_cache(maxsize=None)
 def get_apod_client():
+    """ Gets the client to access the API wrapper and caches it """
     return ApodClient()
 
 
-# TODO: Wrap logging, add unit tests, docstrings
+# TODO: Update unit tests
 @wrap(entering, exiting)
 def convert_date(_date):
+    """ Converts and formats the date """
     for fmt in DATE_FMTS:
         try:
             return datetime.strptime(_date, fmt).strftime('%Y-%m-%d')
@@ -39,51 +40,37 @@ def convert_date(_date):
     raise ValueError('No valid date format found')
 
 
-# TODO: Docstrings
 class ApodClient:
     def __init__(self):
+        """ Initializes the client for the API wrapper """
         self._config = get_client_cfg()
-        # self._logger = logger
 
         self._hook = ApodHook()
         self._transport = AIOHTTPTransport(url=self._config['endpoint'])
         self._client = Client(transport=self._transport, fetch_schema_from_transport=True)
 
-        # TODO: Extract to log wrapper
-        # self._logger.debug(f'''
-        # ApodClient initialized;
-        # transport: {self._transport},
-        # client: {self._client},
-        # hook: {self._hook}
-        # ''')
-        # self._logger.info('ApodClient initialized')
-
-    # @wrap(entering, exiting)
+    @wrap(entering, exiting)
     def _get_schema(self):
+        """ Gets GQL schema """
         return DSLSchema(self._client.schema)
 
-    # @wrap(entering, exiting)
+    @wrap(entering, exiting)
     async def handle(self, commands):
-        # self._logger.debug(f'Commands: {commands}')
-
+        """ Handles commands and queries the API wrapper """
         # TODO: Implement full command handling
         if commands['date']:
             result = await self.query_apod_by_date(date=commands['date'])
             query = 'apodByDate'
 
-            get_logger().info(f"Query result: {result}")
         else:
             result = await self.query_today()
             query = 'today'
 
-        # self._logger.info(f'Query set to "{query}"')
-        # self._logger.info('Query results received')
-        # self._logger.debug(f'Query results: {result}')
-
         await self._hook.fire(data=result[query], multi=isinstance(result[query], list))
 
-    # @wrap(entering, exiting)
+    @wrap(entering, exiting)
     async def query_today(self, thumbs=False):
+        """ Queries the API wrapper with the 'today' query """
         async with self._client as session:
             schema = self._get_schema()
             query = dsl_gql(DSLQuery(
@@ -100,8 +87,9 @@ class ApodClient:
             result = await session.execute(query)
             return result
 
-    # @wrap(entering, exiting)
+    @wrap(entering, exiting)
     async def query_apod_by_date(self, date, thumbs=False):
+        """ Queries the API wrapper with the 'apodByDate' query """
         async with self._client as session:
             schema = self._get_schema()
             query = dsl_gql(DSLQuery(
@@ -118,8 +106,9 @@ class ApodClient:
             result = await session.execute(query)
             return result
 
-    # @wrap(entering, exiting)
+    @wrap(entering, exiting)
     async def query_apods_by_date(self, start_date, end_date, thumbs=False):
+        """ Queries the API wrapper with the 'apodsByDate' query """
         async with self._client as session:
             schema = self._get_schema()
             query = dsl_gql(DSLQuery(
@@ -137,8 +126,9 @@ class ApodClient:
             result = await session.execute(query)
             return result
 
-    # @wrap(entering, exiting)
+    @wrap(entering, exiting)
     async def query_random_apods(self, count, thumbs=False):
+        """ Queries the API wrapper with the 'randomApods' query """
         async with self._client as session:
             schema = self._get_schema()
             query = dsl_gql(DSLQuery(
