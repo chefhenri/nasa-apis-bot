@@ -58,11 +58,11 @@ class ApodClient:
         # ''')
         # self._logger.info('ApodClient initialized')
 
-    @wrap(entering, exiting)
+    # @wrap(entering, exiting)
     def _get_schema(self):
         return DSLSchema(self._client.schema)
 
-    @wrap(entering, exiting)
+    # @wrap(entering, exiting)
     async def handle(self, commands):
         # self._logger.debug(f'Commands: {commands}')
 
@@ -70,6 +70,8 @@ class ApodClient:
         if commands['date']:
             result = await self.query_apod_by_date(date=commands['date'])
             query = 'apodByDate'
+
+            get_logger().info(f"Query result: {result}")
         else:
             result = await self.query_today()
             query = 'today'
@@ -80,7 +82,7 @@ class ApodClient:
 
         await self._hook.fire(data=result[query], multi=isinstance(result[query], list))
 
-    @wrap(entering, exiting)
+    # @wrap(entering, exiting)
     async def query_today(self, thumbs=False):
         async with self._client as session:
             schema = self._get_schema()
@@ -98,7 +100,7 @@ class ApodClient:
             result = await session.execute(query)
             return result
 
-    @wrap(entering, exiting)
+    # @wrap(entering, exiting)
     async def query_apod_by_date(self, date, thumbs=False):
         async with self._client as session:
             schema = self._get_schema()
@@ -116,7 +118,7 @@ class ApodClient:
             result = await session.execute(query)
             return result
 
-    @wrap(entering, exiting)
+    # @wrap(entering, exiting)
     async def query_apods_by_date(self, start_date, end_date, thumbs=False):
         async with self._client as session:
             schema = self._get_schema()
@@ -135,7 +137,7 @@ class ApodClient:
             result = await session.execute(query)
             return result
 
-    @wrap(entering, exiting)
+    # @wrap(entering, exiting)
     async def query_random_apods(self, count, thumbs=False):
         async with self._client as session:
             schema = self._get_schema()
