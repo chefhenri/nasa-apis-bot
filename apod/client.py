@@ -24,7 +24,7 @@ DATE_FMTS = (
 # TODO: Wrap logging, docstrings
 @functools.lru_cache(maxsize=None)
 def get_apod_client():
-    return ApodClient(logger=get_logger())
+    return ApodClient()
 
 
 # TODO: Wrap logging, add unit tests, docstrings
@@ -41,22 +41,22 @@ def convert_date(_date):
 
 # TODO: Docstrings
 class ApodClient:
-    def __init__(self, logger):
+    def __init__(self):
         self._config = get_client_cfg()
-        self._logger = logger
+        # self._logger = logger
 
-        self._hook = ApodHook(logger=self._logger)
+        self._hook = ApodHook()
         self._transport = AIOHTTPTransport(url=self._config['endpoint'])
         self._client = Client(transport=self._transport, fetch_schema_from_transport=True)
 
         # TODO: Extract to log wrapper
-        self._logger.debug(f'''
-        ApodClient initialized; 
-        transport: {self._transport},
-        client: {self._client},
-        hook: {self._hook}
-        ''')
-        self._logger.info('ApodClient initialized')
+        # self._logger.debug(f'''
+        # ApodClient initialized;
+        # transport: {self._transport},
+        # client: {self._client},
+        # hook: {self._hook}
+        # ''')
+        # self._logger.info('ApodClient initialized')
 
     @wrap(entering, exiting)
     def _get_schema(self):
@@ -64,7 +64,7 @@ class ApodClient:
 
     @wrap(entering, exiting)
     async def handle(self, commands):
-        self._logger.debug(f'Commands: {commands}')
+        # self._logger.debug(f'Commands: {commands}')
 
         # TODO: Implement full command handling
         if commands['date']:
@@ -74,9 +74,9 @@ class ApodClient:
             result = await self.query_today()
             query = 'today'
 
-        self._logger.info(f'Query set to "{query}"')
-        self._logger.info('Query results received')
-        self._logger.debug(f'Query results: {result}')
+        # self._logger.info(f'Query set to "{query}"')
+        # self._logger.info('Query results received')
+        # self._logger.debug(f'Query results: {result}')
 
         await self._hook.fire(data=result[query], multi=isinstance(result[query], list))
 
