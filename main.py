@@ -1,4 +1,6 @@
+import os
 import sys
+
 from datetime import date
 
 from discord.ext import commands
@@ -39,9 +41,12 @@ async def _apod(ctx, _date: str = date.today().strftime('%m/%d/%Y')):
 
 def init(mode):
     """ NASA Bot config and logging init """
-    init_root_cfg(f".env.{mode}")
-    logger_cfg = get_logger_cfg()
-    init_logger(log_lvl=logger_cfg['log_lvl'], log_dir=logger_cfg['log_dir'])
+    if os.path.exists(f".env.{mode}"):
+        init_root_cfg(f".env.{mode}")
+        logger_cfg = get_logger_cfg()
+        init_logger(log_lvl=logger_cfg['log_lvl'], log_dir=logger_cfg['log_dir'])
+    else:
+        sys.exit('No .env file present')
 
 
 def main():
