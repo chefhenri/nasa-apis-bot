@@ -10,20 +10,20 @@ from utils.logging import init_logger
 bot_client = commands.Bot(command_prefix='/')
 
 
-# TODO: Wrap logging, integration tests
+# TODO: Wrap logging, integration tests, docstrings
 @bot_client.event
 async def on_ready():
     print(f'Logged in as {bot_client.user}')
 
 
-# TODO: Wrap logging, integration tests
+# TODO: Wrap logging, integration tests, docstrings
 @bot_client.event
 async def on_command_error(ctx, err):
     if isinstance(err, commands.CommandNotFound):
         pass
 
 
-# TODO: Wrap logging, integration tests
+# TODO: Wrap logging, integration tests, docstrings
 @bot_client.command(name='apod', aliases=['today'])
 async def _apod(ctx, _date: str = date.today().strftime('%m/%d/%Y')):
     try:
@@ -34,12 +34,14 @@ async def _apod(ctx, _date: str = date.today().strftime('%m/%d/%Y')):
     await get_apod_client().handle({'date': _date})
 
 
+# TODO: Docstrings
 def init(mode):
     init_root_cfg(f".env.{mode}")
     logger_cfg = get_logger_cfg()
     init_logger(log_lvl=logger_cfg['log_lvl'], log_dir=logger_cfg['log_dir'])
 
 
+# TODO: Docstrings
 def main():
     init(sys.argv[1])
     bot_client.run(get_client_cfg()['token'])

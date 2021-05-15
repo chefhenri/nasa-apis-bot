@@ -9,10 +9,12 @@ LOG_FILE = f"nasa-log-{date.today().strftime(DATE_FMT)}.log"
 LOG_FMT = '%(asctime)s:%(levelname)s:%(name)s: - %(message)s'
 
 
+# TODO: Docstrings
 def init_logger(log_lvl, log_dir):
     logging.basicConfig(level=eval(log_lvl), filename=f"{log_dir}/{LOG_FILE}", format=LOG_FMT)
 
 
+# TODO: Docstrings
 @functools.lru_cache(maxsize=None)
 def get_logger():
     return logging.getLogger(name=LOGGER_NAME)

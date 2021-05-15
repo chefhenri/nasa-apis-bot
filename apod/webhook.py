@@ -5,7 +5,7 @@ from utils.config import get_hook_cfg
 from utils.logging import wrap, entering, exiting
 
 
-# TODO: Add 'help' function
+# TODO: Add 'help' function, docstrings
 class ApodHook:
     def __init__(self, logger):
         self._config = get_hook_cfg()

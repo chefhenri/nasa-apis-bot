@@ -5,12 +5,13 @@ from dotenv import dotenv_values
 root_config = {}
 
 
+# TODO: Docstrings
 def init_root_cfg(env_path):
     global root_config
     root_config = dotenv_values(dotenv_path=env_path)
 
 
-# TODO: Wrap logging
+# TODO: Wrap logging, docstrings
 @functools.lru_cache(maxsize=None)
 def get_logger_cfg():
     return {
@@ -19,7 +20,7 @@ def get_logger_cfg():
     }
 
 
-# TODO: Wrap logging
+# TODO: Wrap logging, docstrings
 @functools.lru_cache(maxsize=None)
 def get_client_cfg():
     return {
@@ -29,7 +30,7 @@ def get_client_cfg():
     }
 
 
-# TODO: Wrap logging
+# TODO: Wrap logging, docstrings
 @functools.lru_cache(maxsize=None)
 def get_hook_cfg():
     return {

@@ -21,13 +21,13 @@ DATE_FMTS = (
 )
 
 
-# TODO: Wrap logging
+# TODO: Wrap logging, docstrings
 @functools.lru_cache(maxsize=None)
 def get_apod_client():
     return ApodClient(logger=get_logger())
 
 
-# TODO: Wrap logging, add unit tests
+# TODO: Wrap logging, add unit tests, docstrings
 @wrap(entering, exiting)
 def convert_date(_date):
     for fmt in DATE_FMTS:
@@ -39,6 +39,7 @@ def convert_date(_date):
     raise ValueError('No valid date format found')
 
 
+# TODO: Docstrings
 class ApodClient:
     def __init__(self, logger):
         self._config = get_client_cfg()
