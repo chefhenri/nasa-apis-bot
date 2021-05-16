@@ -1,0 +1,55 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches:
+      - 'production'
+
+jobs:
+  build-latest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build & Push
+        id: docker_build_latest
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm/v7
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/nasa-apis-bot:latest
+
+      - name: Image Digest
+        run: echo ${{ steps.docker_build_latest.outputs.digest }}
+
+#  build-release:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Setup Docker Buildx
+#        uses: docker/setup-buildx-action@v1
+#
+#      - name: Login to DockerHub
+#        uses: docker/login-action@v1
+#        with:
+#          username: ${{ secrets.DOCKERHUB_USERNAME }}
+#          password: ${{ secrets.DOCKERHUB_TOKEN }}
+#
+#      - name: Build & Push
+#        id: docker_build_release
+#        uses: docker/build-push-action@v2
+#        with:
+#          context: .
+#          platforms: linux/amd64,linux/arm/v7
+#          push: true
+#          tags: ${{ secrets.DOCKERHUB_USERNAME }}/nasa-apis-bot:{{ <version_tag> }}
+#
+#      - name: Image Digest
+#        run: echo ${{ steps.docker_build_latest.outputs.digest }}
