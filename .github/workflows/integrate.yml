@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - 'production'
-      - 'master'
 
 jobs:
   build-latest:
@@ -31,7 +30,7 @@ jobs:
         with:
           context: .
           platforms: linux/amd64,linux/arm/v7
-          push: false
+          push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/nasa-apis-bot:latest
 
       - name: Image Digest
