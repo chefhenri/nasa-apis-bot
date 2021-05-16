@@ -1,5 +1,14 @@
 # Project files
-.idea/**/*.*
+__pycache__/
+.idea/
+venv/
+
+# Env
+.env.*
+
+# Git
+.git/
+.gitignore
 
 # Logs
 logs/
@@ -7,10 +16,6 @@ logs/
 # Tests
 tests/
 
-# Git
-.git/
-.gitignore
+# Workflows
+.github/
 
-# Env
-.env.dev
-.env.prod
