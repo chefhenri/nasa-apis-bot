@@ -67,7 +67,7 @@ jobs:
         with:
           context: .
           platforms: linux/amd64,linux/arm/v7
-          push: false
+          push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/nasa-apis-bot:${{github.event.release.tag_name}}
 
       - name: Image Digest
