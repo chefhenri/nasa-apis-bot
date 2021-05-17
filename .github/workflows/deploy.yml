@@ -40,6 +40,7 @@ jobs:
 
       - name: Image Digest
         run: echo ${{ steps.docker_build.outputs.digest }}
+          && echo ${{ secrets.DOCKERHUB_USERNAME }}/nasa-apis-bot:latest
 
   deploy-release:
     if: github.event_name == 'release'
@@ -71,3 +72,4 @@ jobs:
 
       - name: Image Digest
         run: echo ${{ steps.docker_build.outputs.digest }}
+          && echo ${{ secrets.DOCKERHUB_USERNAME }}/nasa-apis-bot:${{github.event.release.tag_name}}
