@@ -1,6 +1,8 @@
 name: Docker Image CD
 
 on:
+  workflow_dispatch:
+
   push:
     branches:
       - 'production'
