@@ -1,17 +1,12 @@
 name: Docker Image CD
 
 on:
-  push:
-    branches:
-      - 'production'
-
   release:
     types:
-      - 'created'
+      - 'released'
 
 jobs:
   deploy-latest:
-    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -43,7 +38,6 @@ jobs:
           && echo ${{ secrets.DOCKERHUB_USERNAME }}/nasa-apis-bot:latest
 
   deploy-release:
-    if: github.event_name == 'release'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
