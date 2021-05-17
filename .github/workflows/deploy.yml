@@ -1,19 +1,12 @@
 name: Docker Image CD
 
 on:
-  workflow_dispatch:
-
-  push:
-    branches:
-      - 'production'
-
   release:
     types:
-      - 'created'
+      - 'released'
 
 jobs:
   deploy-latest:
-    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -45,7 +38,6 @@ jobs:
           && echo ${{ secrets.DOCKERHUB_USERNAME }}/nasa-apis-bot:latest
 
   deploy-release:
-    if: github.event_name == 'release'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -69,7 +61,7 @@ jobs:
         with:
           context: .
           platforms: linux/amd64,linux/arm/v7
-          push: false
+          push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/nasa-apis-bot:${{github.event.release.tag_name}}
 
       - name: Image Digest

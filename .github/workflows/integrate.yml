@@ -32,6 +32,8 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm/v7
           push: false
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/nasa-apis-bot:latest
 
       - name: Image Digest
         run: echo ${{ steps.docker_build.outputs.digest }}
+          && echo ${{ secrets.DOCKERHUB_USERNAME }}/nasa-apis-bot:latest
