@@ -2,46 +2,49 @@
 import os
 import unittest
 
-from datetime import date
+from utils.logging import LOG_FILE, init_logger, get_logger, wrap, entering, exiting
 
-from utils.config import init_root_cfg, get_logger_cfg
-from utils.logger import BotLogger
+LOG_LVL = 'logging.DEBUG'
+LOG_DIR = '../../logs'
 
-ENV_PATH = '/Users/henrylarson/PycharmProjects/nasa-apis-bot/.env.dev'
+FUNC_NO_RETURN = 'The function did not return the expected result.'
+MSG_NOT_LOGGED = 'The log filesize has not increased, the message was not logged.'
 
 
-# FIXME: Fix constructors
+def get_log_filesize():
+    """ Gets the size of the log file """
+    return os.path.getsize(f"{LOG_DIR}/{LOG_FILE}")
+
+
+@wrap(entering, exiting)
+def wrapped_func():
+    """ A function wrapped for testing """
+    return 'I was wrapped!'
+
+
+# FIXME: Update unit tests
 class LoggerTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        init_root_cfg(ENV_PATH)
-        cls._config = get_logger_cfg()
-        cls._logger = BotLogger()
-        cls._filename = f"nasa-log-{date.today().strftime('%Y-%m-%d')}.log"
-        cls._filesize = os.path.getsize(f"{cls._config['log_dir']}/{cls._filename}")
+        # TODO: Init logger
+        init_logger(log_lvl=LOG_LVL, log_dir=LOG_DIR)
+
+        cls._logger = get_logger()
+        cls._filesize = get_log_filesize()
 
     def setUp(self) -> None:
-        self.log_file_size = self.get_log_filesize()
+        self.log_file_size = get_log_filesize()
 
-    def get_log_filesize(self):
-        return os.path.getsize(f"{self._config['log_dir']}/{self._filename}")
-
-    def test_log_info(self):
+    def test_info(self):
         self._logger.info('Test info message')
-        self.assertTrue(self.get_log_filesize() > self._filesize)
+        self.assertTrue(self.log_file_size < get_log_filesize(), MSG_NOT_LOGGED)
 
-    def test_log_warn(self):
-        self._logger.warn('Test warning message')
-        self.assertTrue(self.get_log_filesize() > self._filesize)
+    def test_debug(self):
+        self._logger.debug('Test info message')
+        self.assertTrue(self.log_file_size < get_log_filesize(), MSG_NOT_LOGGED)
 
-    def test_log_err(self):
-        self._logger.err('Test error message')
-        self.assertTrue(self.get_log_filesize() > self._filesize)
+    def test_wrap(self):
+        test_res = wrapped_func()
 
-    def test_log_debug(self):
-        self._logger.debug('Test debug message')
-        self.assertTrue(self.get_log_filesize() > self._filesize)
-
-    def test_log_crit(self):
-        self._logger.crit('Test critical message')
-        self.assertTrue(self.get_log_filesize() > self._filesize)
+        self.assertIsNotNone(test_res, FUNC_NO_RETURN)
+        self.assertTrue(self.log_file_size < get_log_filesize(), MSG_NOT_LOGGED)
