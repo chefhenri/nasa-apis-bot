@@ -1,6 +1,10 @@
 name: Docker Image CI
 
 on:
+  pull_request:
+    branches:
+      - 'master'
+
   push:
     branches:
       - 'production'
@@ -11,6 +15,36 @@ on:
 
 jobs:
   build-latest:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build & Push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm/v7
+          push: false
+
+      - name: Image Digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
+
+  deploy-latest:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
@@ -41,7 +75,7 @@ jobs:
       - name: Image Digest
         run: echo ${{ steps.docker_build.outputs.digest }}
 
-  build-release:
+  deploy-release:
     if: github.event_name == 'release'
     runs-on: ubuntu-latest
     steps:
