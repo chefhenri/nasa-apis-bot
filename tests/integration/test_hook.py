@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from apod.webhook import get_hook
+from apod.apod_hook import get_hook
 from utils.config import init_root_cfg
 
 ENV_PATH = os.path.join(os.path.dirname(__file__), '../../.env.dev')

@@ -5,7 +5,7 @@ from gql import Client
 from gql.dsl import DSLQuery, DSLSchema, dsl_gql
 from gql.transport.aiohttp import AIOHTTPTransport
 
-from apod.webhook import get_hook
+from apod.apod_hook import get_hook
 from utils.config import get_client_cfg
 from utils.logging import wrap, entering, exiting
 

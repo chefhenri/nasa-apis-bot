@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from apod.client import get_apod_client
+from apod.apod_client import get_apod_client
 from utils.config import init_root_cfg
 
 ENV_PATH = os.path.join(os.path.dirname(__file__), '../../.env.dev')
