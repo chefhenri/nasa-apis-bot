@@ -1,11 +1,11 @@
-# FIXME: Fix imports
 import os
 import unittest
 
 from utils.logging import LOG_FILE, init_logger, get_logger, wrap, entering, exiting
 
 LOG_LVL = 'logging.DEBUG'
-LOG_DIR = '../../logs'
+
+LOG_DIR = os.path.join(os.path.dirname(__file__), '../../logs')
 
 FUNC_NO_RETURN = 'The function did not return the expected result.'
 MSG_NOT_LOGGED = 'The log filesize has not increased, the message was not logged.'
@@ -22,11 +22,9 @@ def wrapped_func():
     return 'I was wrapped!'
 
 
-# FIXME: Update unit tests
 class LoggerTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        # TODO: Init logger
         init_logger(log_lvl=LOG_LVL, log_dir=LOG_DIR)
 
         cls._logger = get_logger()
