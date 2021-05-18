@@ -1,16 +1,16 @@
-# FIXME: Fix imports
+import os
 import unittest
 
-from apod.client import ApodClient
+from apod.apod_client import get_apod_client
 from utils.config import init_root_cfg
-from utils.logger import BotLogger
+
+ENV_PATH = os.path.join(os.path.dirname(__file__), '../../.env.dev')
 
 DATE_ARG = '1999-06-28'
 START_DATE_ARG = DATE_ARG
 END_DATE_ARG = '1999-06-29'
 COUNT_ARG = 2
 
-ENV_PATH = '/Users/henrylarson/PycharmProjects/nasa-apis-bot/.env.dev'
 
 APOD_BY_DATE_VAL = {
     "copyright": None,
@@ -68,18 +68,27 @@ APODS_BY_COUNT_QUERY = 'randomApods'
 RESULT_NO_MATCH = 'The expected result does not match the tested result.'
 
 
-# FIXME: Fix constructors
+class TestClientHandle(unittest.IsolatedAsyncioTestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        init_root_cfg(ENV_PATH)
+        # TODO: Mock ApodClient components
+        pass
+
+    @unittest.skip('not implemented')
+    async def test_handle(self):
+        pass
+
+
 class TestClientQueries(unittest.IsolatedAsyncioTestCase):
     @classmethod
     def setUpClass(cls) -> None:
+        init_root_cfg(ENV_PATH)
         cls.maxDiff = None
-        cls._config = init_root_cfg(ENV_PATH)
-
-        cls._logger = BotLogger()
-        cls._client = ApodClient(logger=cls._logger)
+        cls._client = get_apod_client()
 
     async def test_query_today(self):
-        test_val = await self._client.query_today()
+        test_val = await self._client._query_today()
 
         # Check query result
         self.assertIn('today', test_val)
@@ -93,7 +102,7 @@ class TestClientQueries(unittest.IsolatedAsyncioTestCase):
         self.assertIn('url', test_val['today'])
 
     async def test_query_apod_by_date(self):
-        test_val = await self._client.query_apod_by_date(DATE_ARG)
+        test_val = await self._client._query_apod_by_date(DATE_ARG)
         exp_val = APOD_BY_DATE_VAL
 
         # Check query result
@@ -101,7 +110,7 @@ class TestClientQueries(unittest.IsolatedAsyncioTestCase):
         self.assertDictEqual(test_val[APOD_BY_DATE_QUERY], exp_val, RESULT_NO_MATCH)
 
     async def test_query_apods_by_date(self):
-        test_val = await self._client.query_apods_by_date(START_DATE_ARG, END_DATE_ARG)
+        test_val = await self._client._query_apods_by_date(START_DATE_ARG, END_DATE_ARG)
         exp_val = APODS_BY_DATE_VAL
 
         # Check query result
@@ -109,7 +118,7 @@ class TestClientQueries(unittest.IsolatedAsyncioTestCase):
         self.assertListEqual(test_val[APODS_BY_DATE_QUERY], exp_val, RESULT_NO_MATCH)
 
     async def test_query_random_apods(self):
-        test_val = await self._client.query_random_apods(COUNT_ARG)
+        test_val = await self._client._query_random_apods(COUNT_ARG)
 
         # Check query result
         self.assertIn(APODS_BY_COUNT_QUERY, test_val)

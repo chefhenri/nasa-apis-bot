@@ -20,6 +20,7 @@ SINGLE_EMBED_DATA_ARG = {
     "title": "From Mars with Love",
     "url": "https://apod.nasa.gov/apod/image/9906/marsheart_mgs.jpg"
 }
+
 MULTI_EMBED_DATA_ARG = [
     {
         "copyright": None,
@@ -56,16 +57,49 @@ MULTI_EMBED_DATA_ARG = [
 ]
 
 
-class TestHookFire(unittest.IsolatedAsyncioTestCase):
+class TestHook(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         init_root_cfg(ENV_PATH)
         cls._hook = get_hook()
 
-    @unittest.skip('needs refactor to mock webhook')
-    async def test_fire_single_embed(self):
-        await self._hook.fire(data=SINGLE_EMBED_DATA_ARG, multi=False)
+    @unittest.skip('not implemented')
+    def test_get_webhook(self):
+        pass
 
-    @unittest.skip('needs refactor to mock webhook')
-    async def test_fire_multiple_embeds(self):
-        await self._hook.fire(data=MULTI_EMBED_DATA_ARG, multi=True)
+
+class TestHookEmbeds(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        init_root_cfg(ENV_PATH)
+        cls._hook = get_hook()
+
+    def test_get_embed(self):
+        test_val = self._hook._get_embed(SINGLE_EMBED_DATA_ARG)
+
+        # Check embed
+        self.assertIsNotNone(test_val)
+
+        test_val = test_val.to_dict()
+
+        # Check embed data
+        self.assertIn('image', test_val)
+        self.assertIn('fields', test_val)
+        self.assertIn('description', test_val)
+        self.assertIn('url', test_val)
+        self.assertIn('title', test_val)
+
+    def test_get_embeds(self):
+        test_val = self._hook._get_embeds(MULTI_EMBED_DATA_ARG)
+
+        # Check embed
+        self.assertIsNotNone(test_val)
+
+        # Check embed data
+        for embed in test_val:
+            embed = embed.to_dict()
+            self.assertIn('image', embed)
+            self.assertIn('fields', embed)
+            self.assertIn('description', embed)
+            self.assertIn('url', embed)
+            self.assertIn('title', embed)
