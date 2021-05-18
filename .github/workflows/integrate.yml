@@ -21,7 +21,6 @@ jobs:
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
           pip install flake8
 
       - name: Lint with flake8
@@ -38,7 +37,7 @@ jobs:
 
       - name: Setup dotenv
         run: |
-          echo "${{ secrets.DOTENV_DEV }}" > .env.dev
+          echo "${{ secrets.DOTENV_STAGE }}" > .env.stage
 
       - name: Setup Python
         uses: actions/setup-python@v2

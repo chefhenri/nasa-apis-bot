@@ -4,7 +4,7 @@ import unittest
 from apod.apod_client import get_apod_client
 from utils.config import init_root_cfg
 
-ENV_PATH = os.path.join(os.path.dirname(__file__), '../../.env.dev')
+ENV_PATH = os.path.join(os.path.dirname(__file__), '../../.env.stage')
 
 DATE_ARG = '1999-06-28'
 START_DATE_ARG = DATE_ARG

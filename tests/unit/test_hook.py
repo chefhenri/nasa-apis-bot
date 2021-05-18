@@ -4,7 +4,7 @@ import unittest
 from apod.apod_hook import get_hook
 from utils.config import init_root_cfg
 
-ENV_PATH = os.path.join(os.path.dirname(__file__), '../../.env.dev')
+ENV_PATH = os.path.join(os.path.dirname(__file__), '../../.env.stage')
 
 SINGLE_EMBED_DATA_ARG = {
     "copyright": None,
