@@ -20,8 +20,8 @@ DATE_FMTS = (
 )
 
 
+# @wrap(entering, exiting)
 @functools.lru_cache(maxsize=None)
-@wrap(entering, exiting)
 def get_apod_client():
     """ Gets the client to access the API wrapper and caches it """
     config = get_client_cfg()
