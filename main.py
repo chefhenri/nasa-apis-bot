@@ -5,7 +5,7 @@ from datetime import date
 
 from discord.ext import commands
 
-from apod.client import get_apod_client, convert_date
+from apod.apod_client import get_apod_client, convert_date
 from utils.config import get_client_cfg, init_root_cfg, get_logger_cfg
 from utils.logging import init_logger
 
