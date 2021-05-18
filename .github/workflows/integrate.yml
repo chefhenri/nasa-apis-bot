@@ -13,7 +13,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v2
         with:
           python-version: '3.x'
@@ -36,7 +36,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Set up Python
+      - name: Setup dotenv
+        run: |
+          echo "${{ secrets.DOTENV_DEV }}" > .env.dev
+
+      - name: Setup Python
         uses: actions/setup-python@v2
         with:
           python-version: '3.x'
