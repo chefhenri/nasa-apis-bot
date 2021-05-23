@@ -12,14 +12,12 @@ from utils.logging import init_logger
 bot_client = commands.Bot(command_prefix='/')
 
 
-# TODO: Update integration tests
 @bot_client.event
 async def on_ready():
     """ NASA Bot ready status """
     print(f'Logged in as {bot_client.user}')
 
 
-# TODO: Update integration tests
 @bot_client.event
 async def on_command_error(ctx, err):
     """ NASA Bot command error handling """
@@ -27,7 +25,6 @@ async def on_command_error(ctx, err):
         pass
 
 
-# TODO: Update integration tests
 @bot_client.command(name='apod', aliases=['today'])
 async def _apod(ctx, _date: str = date.today().strftime('%m/%d/%Y')):
     """ NASA Bot 'today/apod' command handling """
