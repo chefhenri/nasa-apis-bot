@@ -1,23 +1,17 @@
-import os
 import unittest
 
 from apod.apod_client import ApodClient, get_apod_client, convert_date
 from utils.config import init_root_cfg
-
-ENV_PATH = os.path.join(os.path.dirname(__file__), '../../.env.stage')
-
-DATE_ARG_SLASH_FMT_ONE = '06/28/1999'
-DATE_ARG_SLASH_FMT_TWO = '28/06/1999'
-DATE_ARG_DOT_FMT_ONE = '06.28.1999'
-DATE_ARG_DOT_FMT_TWO = '28.06.1999'
-DATE_ARG_DASH_FMT_ONE = '06-28-1999'
-DATE_ARG_DASH_FMT_TWO = '28-06-1999'
-
-ISO_DATE_DASH_FMT = '1999-06-28'
-BAD_DATE_FMT = '1999--06--28'
-
-OBJ_NO_MATCH = 'The two objects are not of the same instance.'
-DATE_NO_MATCH = 'The tested date does not match the expected date.'
+from tests import ENV_PATH
+from tests.unit import DATE_ARG_SLASH_FMT_ONE, \
+    DATE_ARG_SLASH_FMT_TWO, \
+    DATE_ARG_DOT_FMT_ONE, \
+    DATE_ARG_DOT_FMT_TWO, \
+    DATE_ARG_DASH_FMT_ONE, \
+    DATE_ARG_DASH_FMT_TWO, \
+    ISO_DATE_DASH_FMT, \
+    BAD_DATE_FMT, \
+    OBJ_NO_MATCH
 
 
 class TestClient(unittest.TestCase):
