@@ -53,3 +53,28 @@ APODS_DATA_ARG = [
         "url": "https://apod.nasa.gov/apod/image/9906/gemini_pfa.jpg"
     }
 ]
+
+# Client testing constants
+DATE_ARG_SLASH_FMT_ONE = '06/28/1999'
+DATE_ARG_SLASH_FMT_TWO = '28/06/1999'
+DATE_ARG_DOT_FMT_ONE = '06.28.1999'
+DATE_ARG_DOT_FMT_TWO = '28.06.1999'
+DATE_ARG_DASH_FMT_ONE = '06-28-1999'
+DATE_ARG_DASH_FMT_TWO = '28-06-1999'
+
+ISO_DATE_DASH_FMT = '1999-06-28'
+BAD_DATE_FMT = '1999--06--28'
+
+ISO_DATE = '1999-06-28'
+ISO_START_DATE = ISO_DATE
+ISO_END_DATE = '1999-06-29'
+
+APOD_BY_DATE_QUERY = 'apodByDate'
+APODS_BY_DATE_QUERY = 'apodsByDate'
+APODS_BY_COUNT_QUERY = 'randomApods'
+
+# Assert messages
+OBJ_NO_MATCH = 'The two objects are not of the same instance.'
+DATE_NO_MATCH = 'The tested date does not match the expected date.'
+RESULT_NO_MATCH = 'The expected result does not match the tested result.'
+
