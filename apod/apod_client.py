@@ -85,12 +85,6 @@ class ApodClient:
         return query, result
 
     @wrap(entering, exiting)
-    async def handle(self, commands):
-        """ Handles query commands and fires the webhook """
-        query, result = await self._get_query(commands)
-        await self._hook.fire(data=result[query], multi=isinstance(result[query], list))
-
-    @wrap(entering, exiting)
     async def _query_today(self, thumbs=False):
         """ Queries the API wrapper with the 'today' query """
         async with self._gql_client as session:
@@ -134,3 +128,9 @@ class ApodClient:
 
             result = await session.execute(query)
             return result
+
+    @wrap(entering, exiting)
+    async def handle(self, commands):
+        """ Handles query commands and fires the webhook """
+        query, result = await self._get_query(commands)
+        await self._hook.fire(data=result[query], multi=isinstance(result[query], list))
