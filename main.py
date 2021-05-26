@@ -26,8 +26,11 @@ async def on_command_error(ctx, err):
 
 
 @bot_client.command(name='apod', aliases=['today'])
-async def _apod(ctx, _date: str = date.today().strftime('%m/%d/%Y')):
+async def _apod(ctx, _date: str = None):
     """ NASA Bot 'today/apod' command handling """
+    if not _date:
+        _date = date.today().strftime('%m/%d/%Y')
+
     try:
         _date = convert_date(_date)
     except ValueError:
