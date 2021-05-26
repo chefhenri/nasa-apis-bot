@@ -1,5 +1,5 @@
 import functools
-from datetime import datetime
+from datetime import date, datetime
 
 from gql import Client
 from gql.dsl import DSLQuery, DSLSchema, dsl_gql
@@ -20,7 +20,6 @@ DATE_FMTS = (
 )
 
 
-# @wrap(entering, exiting)
 @functools.lru_cache(maxsize=None)
 def get_apod_client():
     """ Gets the client to access the API wrapper and caches it """
