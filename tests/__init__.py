@@ -1,12 +1,10 @@
 import os
-import unittest
 
-from apod.apod_hook import get_hook
-from utils.config import init_root_cfg
+# Dotenv path
+ENV_PATH = os.path.join(os.path.dirname(__file__), '../.env.stage')
 
-ENV_PATH = os.path.join(os.path.dirname(__file__), '../../.env.stage')
-
-SINGLE_EMBED_DATA_ARG = {
+# APOD data constants
+APOD_DATA_ARG = {
     "copyright": None,
     "explanation": "Are Martians trying to tell us something?  An indentation has been recently photographed on Mars "
                    "that resembles a heart, a common human symbol for love.  Because intelligent Martians have never "
@@ -21,7 +19,7 @@ SINGLE_EMBED_DATA_ARG = {
     "url": "https://apod.nasa.gov/apod/image/9906/marsheart_mgs.jpg"
 }
 
-MULTI_EMBED_DATA_ARG = [
+APODS_DATA_ARG = [
     {
         "copyright": None,
         "explanation": "Are Martians trying to tell us something?  An indentation has been recently "
@@ -56,50 +54,27 @@ MULTI_EMBED_DATA_ARG = [
     }
 ]
 
+# Client testing constants
+DATE_ARG_SLASH_FMT_ONE = '06/28/1999'
+DATE_ARG_SLASH_FMT_TWO = '28/06/1999'
+DATE_ARG_DOT_FMT_ONE = '06.28.1999'
+DATE_ARG_DOT_FMT_TWO = '28.06.1999'
+DATE_ARG_DASH_FMT_ONE = '06-28-1999'
+DATE_ARG_DASH_FMT_TWO = '28-06-1999'
 
-class TestHook(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls) -> None:
-        init_root_cfg(ENV_PATH)
-        cls._hook = get_hook()
+ISO_DATE_DASH_FMT = '1999-06-28'
+BAD_DATE_FMT = '1999--06--28'
 
-    @unittest.skip('not implemented')
-    def test_get_webhook(self):
-        pass
+ISO_DATE = '1999-06-28'
+ISO_START_DATE = ISO_DATE
+ISO_END_DATE = '1999-06-29'
 
+APOD_BY_DATE_QUERY = 'apodByDate'
+APODS_BY_DATE_QUERY = 'apodsByDate'
+APODS_BY_COUNT_QUERY = 'randomApods'
 
-class TestHookEmbeds(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls) -> None:
-        init_root_cfg(ENV_PATH)
-        cls._hook = get_hook()
+# Assert messages
+OBJ_NO_MATCH = 'The two objects are not of the same instance.'
+DATE_NO_MATCH = 'The tested date does not match the expected date.'
+RESULT_NO_MATCH = 'The expected result does not match the tested result.'
 
-    def test_get_embed(self):
-        test_val = self._hook._get_embed(SINGLE_EMBED_DATA_ARG)
-
-        # Check embed
-        self.assertIsNotNone(test_val)
-
-        test_val = test_val.to_dict()
-
-        # Check embed data
-        self.assertIn('image', test_val)
-        self.assertIn('fields', test_val)
-        self.assertIn('description', test_val)
-        self.assertIn('url', test_val)
-        self.assertIn('title', test_val)
-
-    def test_get_embeds(self):
-        test_val = self._hook._get_embeds(MULTI_EMBED_DATA_ARG)
-
-        # Check embed
-        self.assertIsNotNone(test_val)
-
-        # Check embed data
-        for embed in test_val:
-            embed = embed.to_dict()
-            self.assertIn('image', embed)
-            self.assertIn('fields', embed)
-            self.assertIn('description', embed)
-            self.assertIn('url', embed)
-            self.assertIn('title', embed)
