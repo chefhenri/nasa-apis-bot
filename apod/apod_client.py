@@ -59,6 +59,19 @@ class ApodClient:
         return DSLSchema(self._gql_client.schema)
 
     @wrap(entering, exiting)
+    def _build_query(self, query_type):
+        """ Selects fields to query """
+        schema = self._get_schema()
+        return dsl_gql(DSLQuery(query_type.select(
+            schema.Apod.copyright,
+            schema.Apod.explanation,
+            schema.Apod.hdurl,
+            schema.Apod.mediaType,
+            schema.Apod.title,
+            schema.Apod.url
+        )))
+
+    @wrap(entering, exiting)
     async def _get_query(self, commands):
         """ Gets the query result for the provided command """
         # TODO: Implement full command handling
@@ -82,16 +95,7 @@ class ApodClient:
         """ Queries the API wrapper with the 'today' query """
         async with self._gql_client as session:
             schema = self._get_schema()
-            query = dsl_gql(DSLQuery(
-                schema.Query.today(apiKey=self._config['api_key'], thumbs=thumbs).select(
-                    schema.Apod.copyright,
-                    schema.Apod.explanation,
-                    schema.Apod.hdurl,
-                    schema.Apod.mediaType,
-                    schema.Apod.title,
-                    schema.Apod.url
-                )
-            ))
+            query = self._build_query(schema.Query.today(apiKey=self._config['api_key'], thumbs=thumbs))
 
             result = await session.execute(query)
             return result
@@ -101,16 +105,7 @@ class ApodClient:
         """ Queries the API wrapper with the 'apodByDate' query """
         async with self._gql_client as session:
             schema = self._get_schema()
-            query = dsl_gql(DSLQuery(
-                schema.Query.apodByDate(apiKey=self._config['api_key'], date=date, thumbs=thumbs).select(
-                    schema.Apod.copyright,
-                    schema.Apod.explanation,
-                    schema.Apod.hdurl,
-                    schema.Apod.mediaType,
-                    schema.Apod.title,
-                    schema.Apod.url
-                )
-            ))
+            query = self._build_query(schema.Query.apodByDate(apiKey=self._config['api_key'], date=date, thumbs=thumbs))
 
             result = await session.execute(query)
             return result
@@ -120,17 +115,10 @@ class ApodClient:
         """ Queries the API wrapper with the 'apodsByDate' query """
         async with self._gql_client as session:
             schema = self._get_schema()
-            query = dsl_gql(DSLQuery(
-                schema.Query.apodsByDate(apiKey=self._config['api_key'], startDate=start_date, endDate=end_date,
-                                         thumbs=thumbs).select(
-                    schema.Apod.copyright,
-                    schema.Apod.explanation,
-                    schema.Apod.hdurl,
-                    schema.Apod.mediaType,
-                    schema.Apod.title,
-                    schema.Apod.url
-                )
-            ))
+            query = self._build_query(schema.Query.apodsByDate(apiKey=self._config['api_key'],
+                                                               startDate=start_date,
+                                                               endDate=end_date,
+                                                               thumbs=thumbs))
 
             result = await session.execute(query)
             return result
@@ -140,16 +128,9 @@ class ApodClient:
         """ Queries the API wrapper with the 'randomApods' query """
         async with self._gql_client as session:
             schema = self._get_schema()
-            query = dsl_gql(DSLQuery(
-                schema.Query.randomApods(apiKey=self._config['api_key'], count=count, thumbs=thumbs).select(
-                    schema.Apod.copyright,
-                    schema.Apod.explanation,
-                    schema.Apod.hdurl,
-                    schema.Apod.mediaType,
-                    schema.Apod.title,
-                    schema.Apod.url
-                )
-            ))
+            query = self._build_query(schema.Query.randomApods(apiKey=self._config['api_key'],
+                                                               count=count,
+                                                               thumbs=thumbs))
 
             result = await session.execute(query)
             return result
