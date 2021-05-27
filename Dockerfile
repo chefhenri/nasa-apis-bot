@@ -25,6 +25,4 @@ COPY main.py .
 COPY utils ./utils
 COPY apod ./apod
 
-RUN zdump /etc/localtime
-
 ENTRYPOINT python3 main.py $MODE
